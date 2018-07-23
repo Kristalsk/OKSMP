@@ -1,0 +1,124 @@
+object AddSpecialForm: TAddSpecialForm
+  Left = 0
+  Top = 0
+  Caption = #1044#1086#1076#1072#1090#1080' '#1082#1072#1090#1077#1075#1086#1088#1110#1102
+  ClientHeight = 388
+  ClientWidth = 415
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 19
+  object lbHeadCategory: TLabel
+    Left = 8
+    Top = 35
+    Width = 67
+    Height = 19
+    Caption = #1050#1072#1090#1077#1075#1086#1088#1110#1111
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 33
+    Width = 415
+    Height = 355
+    Align = alClient
+    Color = clBtnFace
+    DataSource = DataSource1
+    DefaultDrawing = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clDefault
+    TitleFont.Height = -16
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'INFO'
+        Title.Alignment = taCenter
+        Title.Caption = #1050#1072#1090#1077#1075#1086#1088#1110#1103
+        Title.Color = clYellow
+        Width = 500
+        Visible = True
+      end>
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 415
+    Height = 33
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 1
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Action = addSpecCategory
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Action = exit
+    end
+  end
+  object FDQuery1: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = trspec
+    SQL.Strings = (
+      'select * from special ')
+    Left = 104
+    Top = 296
+  end
+  object DataSource1: TDataSource
+    DataSet = FDQuery1
+    Left = 32
+    Top = 288
+  end
+  object ActionList1: TActionList
+    Images = DataModule1.ImageList1
+    Left = 280
+    Top = 264
+    object addSpecCategory: TAction
+      Caption = 'addSpecCategory'
+      ImageIndex = 0
+      OnExecute = addSpecCategoryExecute
+    end
+    object exit: TAction
+      Caption = 'exit'
+      ImageIndex = 4
+      OnExecute = exitExecute
+    end
+  end
+  object FDQuery2: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = trspec
+    Left = 216
+    Top = 176
+  end
+  object trspec: TFDTransaction
+    Options.AutoStop = False
+    Connection = DataModule1.FDConnection
+    Left = 152
+    Top = 232
+  end
+end

@@ -1,0 +1,67 @@
+unit EditReg;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls, Vcl.DBCtrls,
+  Vcl.Buttons, Vcl.ComCtrls, Vcl.Mask;
+
+type
+  TEditAddress = class(TForm)
+    Label1: TLabel;
+    dtpRegDateFrom: TDateTimePicker;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    qryAddressList: TFDQuery;
+    srcAddresList: TDataSource;
+    DBLookupComboBox1: TDBLookupComboBox;
+    edtNumHouse: TDBEdit;
+    edtApartm: TDBEdit;
+    DBEdit1: TDBEdit;
+    procedure dtpRegDateFromChange(Sender: TObject);
+  private
+    private
+    FDataSource: TDataSource;
+    procedure SetDataSource(const Value: TDataSource);
+  public
+    property DataSource: TDataSource read FDataSource write SetDataSource;
+  public
+    { Public declarations }
+  end;
+
+var
+  EditAddress: TEditAddress;
+
+implementation
+
+{$R *.dfm}
+
+uses DModule, formDB;
+
+
+  procedure TEditAddress.dtpRegDateFromChange(Sender: TObject);
+begin
+DBEdit1.Text := DateToStr(dtpRegDateFrom.Date);
+end;
+
+procedure TEditAddress.SetDataSource(const Value: TDataSource);
+begin
+  FDataSource := Value;
+
+  edtNumHouse.DataSource := FDataSource;
+  edtApartm.DataSource := FDataSource;
+  DBLookupComboBox1.DataSource := FDataSource;
+
+
+end;
+
+
+
+end.

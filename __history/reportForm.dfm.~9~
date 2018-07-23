@@ -1,0 +1,160 @@
+object ReportF: TReportF
+  Left = 0
+  Top = 0
+  Caption = #1047#1074#1110#1090
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbNavchRik: TLabel
+    Left = 8
+    Top = 44
+    Width = 166
+    Height = 19
+    Caption = #1047#1074#1110#1090' '#1079#1072' '#1085#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1088#1110#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 35
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 6
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 4
+    end
+  end
+  object Edit1: TEdit
+    Left = 180
+    Top = 41
+    Width = 57
+    Height = 27
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+  end
+  object qryCombo: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'select distinct years, years as yea from education')
+    Left = 568
+    Top = 240
+  end
+  object DataSource1: TDataSource
+    DataSet = qryCombo
+    Left = 512
+    Top = 240
+  end
+  object qryReport: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'With edsum( ech, mzaklad, mclass) '
+      
+        'as (select id_child as Ech, max(id_zaklad) as mZaklad, max(class' +
+        'num) as mClass from education group by id_child )'
+      'select '
+      
+        '   Sum( Case When  mzaklad is null or te.id<2  then 1 else 0 end' +
+        ' ) as Kol,'
+      
+        '   Sum( Case When  mzaklad is null or te.id<2 and (ch.birthday B' +
+        'ETWEEN :End_6 and :End_d) then 1 else 0 end ) as old6,'
+      
+        '   Sum( Case When  mzaklad is null or te.id<2 and (ch.birthday B' +
+        'ETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9, '
+      
+        '   Sum( Case When  mzaklad is null or te.id<2 and (ch.birthday B' +
+        'ETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14,' +
+        ' '
+      
+        '   Sum( Case When  mzaklad is null or te.id<2 and (ch.birthday B' +
+        'ETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15, '
+      
+        '   Sum( Case When  mzaklad is null or te.id<2 and (ch.birthday B' +
+        'ETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18'
+      '   from children ch '
+      '   left outer join edsum es on es.Ech = ch.id'
+      '   Left outer Join Schools Sc On es.mzaklad = sc.id '
+      '   Left outer Join Types_education te On Sc.id_Type = te.id '
+      '   where ch.birthday BETWEEN :End_16_18 and :End_d ')
+    Left = 408
+    Top = 96
+    ParamData = <
+      item
+        Name = 'END_6'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2012'
+      end
+      item
+        Name = 'END_D'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2013'
+      end
+      item
+        Name = 'END_7_9'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2009'
+      end
+      item
+        Name = 'END_10_14'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2003'
+      end
+      item
+        Name = 'END_15'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2012'
+      end
+      item
+        Name = 'END_16_18'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.1999'
+      end>
+  end
+end

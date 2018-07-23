@@ -1,0 +1,152 @@
+object AddSchoolForm: TAddSchoolForm
+  Left = 0
+  Top = 0
+  Caption = #1053#1072#1074#1095#1072#1083#1100#1085#1110' '#1079#1072#1082#1083#1072#1076#1080
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 35
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 1
+      OnClick = ToolButton3Click
+    end
+    object ToolButton4: TToolButton
+      Left = 74
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton4'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
+    object ToolButton5: TToolButton
+      Left = 82
+      Top = 0
+      Caption = 'ToolButton5'
+      ImageIndex = 2
+    end
+    object ToolButton6: TToolButton
+      Left = 115
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton6'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton7: TToolButton
+      Left = 123
+      Top = 0
+      Caption = 'ToolButton7'
+      ImageIndex = 4
+      OnClick = ToolButton7Click
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 35
+    Width = 635
+    Height = 264
+    Align = alClient
+    DataSource = DataSource1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -16
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID'
+        Title.Alignment = taCenter
+        Title.Caption = #8470
+        Width = 30
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ZAKLAD'
+        Title.Alignment = taCenter
+        Title.Caption = #1053#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1079#1072#1082#1083#1072#1076
+        Width = 400
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'TYPE_EDU'
+        Title.Alignment = taCenter
+        Title.Caption = #1050#1072#1090#1077#1075#1086#1088#1110#1103
+        Width = 200
+        Visible = True
+      end>
+  end
+  object qryZaklad: TFDQuery
+    Active = True
+    Connection = DataModule1.FDConnection
+    Transaction = trZaklad
+    SQL.Strings = (
+      'select schools.*, types_education.type_edu from schools '
+      
+        'left outer join types_education on types_education.id = schools.' +
+        'id_type')
+    Left = 336
+    Top = 208
+  end
+  object DataSource1: TDataSource
+    DataSet = qryZaklad
+    Left = 424
+    Top = 208
+  end
+  object trZaklad: TFDTransaction
+    Options.AutoStop = False
+    Connection = DataModule1.FDConnection
+    Left = 272
+    Top = 208
+  end
+  object FDQuery2: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = trZaklad
+    Left = 496
+    Top = 208
+  end
+end

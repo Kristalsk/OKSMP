@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.586,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.419,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.778,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit1.pas=F:\vmdata\OKSMP(odbc)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.908,C:\OKSMP(odbc)\Unit2.pas=C:\OKSMP(odbc)\Main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.333,C:\OKSMP(odbc)\Edit.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.788,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.048,F:\DelphiProjects\Osvita\Unit3.dfm=F:\vmdata\OKSMP(odbc)\Unit3.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.567,F:\DelphiProjects\Osvita\Project2.dproj=C:\Users\Komar\Documents\Embarcadero\Studio\Projects\Project2.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.565,F:\DelphiProjects\Osvita\Unit2.dfm=F:\vmdata\OKSMP(odbc)\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.067,F:\DelphiProjects\Osvita\Unit2.dfm=C:\Users\Komar\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.449,C:\OKSMP(odbc)\Unit4.pas=C:\OKSMP(odbc)\ConfirmDelete.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.161,F:\DelphiProjects\Osvita\Project2.dproj=F:\vmdata\OKSMP(odbc)\OKSMP_odbc.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.274,F:\DelphiProjects\Osvita\Project2.dproj=F:\DelphiProjects\OsvitaDB(withoutDM)\Project2.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.716,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit4.dfm=F:\vmdata\OKSMP(odbc)\Unit4.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.048,F:\DelphiProjects\Osvita\Unit3.pas=F:\vmdata\OKSMP(odbc)\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.067,=F:\DelphiProjects\Osvita\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.230,=F:\DelphiProjects\Osvita\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.799,F:\DelphiProjects\Osvita\Unit1.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.636,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit5.dfm=F:\vmdata\OKSMP(odbc)\Unit5.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.336,=F:\DelphiProjects\Osvita\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.565,F:\DelphiProjects\Osvita\Unit2.pas=F:\vmdata\OKSMP(odbc)\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.779,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit1.dfm=F:\vmdata\OKSMP(odbc)\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.449,C:\OKSMP(odbc)\Unit4.dfm=C:\OKSMP(odbc)\ConfirmDelete.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.388,=C:\Users\Komar\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.908,C:\OKSMP(odbc)\Unit2.dfm=C:\OKSMP(odbc)\Main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.067,F:\DelphiProjects\Osvita\Unit2.pas=C:\Users\Komar\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.636,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit5.pas=F:\vmdata\OKSMP(odbc)\Unit5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.105,C:\OKSMP(odbc)\Unit6.pas=C:\OKSMP(odbc)\viewReport.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.706,=C:\OKSMP(odbc)\Unit6.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.950,C:\OKSMP(odbc)\Unit5.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.001,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.366,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.368,C:\OKSMP(odbc)\Unit1.dfm=C:\OKSMP(odbc)\Edit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.558,C:\OKSMP(odbc)\Unit1.dfm=C:\OKSMP(odbc)\EduDescript.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.508,C:\OKSMP(odbc)\Unit3.pas=C:\OKSMP(odbc)\Add.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.568,F:\DelphiProjects\OsvitaDB(withoutDM)\Project2.dproj=F:\DelphiProjects\Osvita\Project2.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.392,C:\OKSMP(odbc)\Unit1.dfm=C:\OKSMP(odbc)\formDB.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.717,C:\OKSMP(odbc)\Unit1.dfm=C:\OKSMP(odbc)\DModule.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.411,C:\OKSMP(odbc)\Unit1.dfm=C:\OKSMP(odbc)\EditReg.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.914,=C:\OKSMP(odbc)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.564,=C:\OKSMP(odbc)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.259,=C:\OKSMP(odbc)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.508,C:\OKSMP(odbc)\Unit3.dfm=C:\OKSMP(odbc)\Add.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.780,=F:\DelphiProjects\OsvitaDB(withoutDM)\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.716,F:\DelphiProjects\OsvitaDB(withoutDM)\Unit4.pas=F:\vmdata\OKSMP(odbc)\Unit4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.838,=C:\OKSMP(odbc)\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.368,C:\OKSMP(odbc)\Unit1.pas=C:\OKSMP(odbc)\Edit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.411,C:\OKSMP(odbc)\Unit1.pas=C:\OKSMP(odbc)\EditReg.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.105,C:\OKSMP(odbc)\Unit6.dfm=C:\OKSMP(odbc)\viewReport.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.558,C:\OKSMP(odbc)\Unit1.pas=C:\OKSMP(odbc)\EduDescript.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.392,C:\OKSMP(odbc)\Unit1.pas=C:\OKSMP(odbc)\formDB.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.717,C:\OKSMP(odbc)\Unit1.pas=C:\OKSMP(odbc)\DModule.pas</Transaction>
+  </Transactions>
+</BorlandProject>

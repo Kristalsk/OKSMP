@@ -1,0 +1,39 @@
+unit UsersF;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ComCtrls, Vcl.ToolWin;
+
+type
+  TusersForm = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    DBGrid1: TDBGrid;
+    FDQuery1: TFDQuery;
+    DataSource1: TDataSource;
+    FDTransaction1: TFDTransaction;
+    FDQuery2: TFDQuery;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  usersForm: TusersForm;
+
+implementation
+
+{$R *.dfm}
+
+uses DModule, Main;
+
+end.

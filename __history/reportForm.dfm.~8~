@@ -1,0 +1,198 @@
+object ReportF: TReportF
+  Left = 0
+  Top = 0
+  Caption = #1047#1074#1110#1090
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbNavchRik: TLabel
+    Left = 8
+    Top = 44
+    Width = 166
+    Height = 19
+    Caption = #1047#1074#1110#1090' '#1079#1072' '#1085#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1088#1110#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 35
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 6
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 4
+    end
+  end
+  object Edit1: TEdit
+    Left = 180
+    Top = 41
+    Width = 57
+    Height = 27
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+  end
+  object qryCombo: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'select distinct years, years as yea from education')
+    Left = 568
+    Top = 240
+  end
+  object DataSource1: TDataSource
+    DataSet = qryCombo
+    Left = 512
+    Top = 240
+  end
+  object qryReport: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      
+        'select Count( ch.id ) as Kol, Max( case when te.id is null then ' +
+        '0 else te.id end) as Typ, '
+      'Sum( case when ch.gender =1 then 0 else 1 end ) as Girls, '
+      '    Sum( case when sp.id =4 then 1 else 0 end ) as Spec, '
+      
+        '    Sum( case when sp.id =4 and ch.gender =0 then 1 else 0 end )' +
+        ' as SpecG, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d then' +
+        ' 1 else 0 end) as fiveold, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'ch.gender =0 then 1 else 0 end) as fiveoldG, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'sp.id =4 then 1 else 0 end) as fiveoldSpec, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'ch.gender =0 and sp.id =4 then 1 else 0 end) as fiveoldSpecG, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'te.id =2 then 1 else 0 end) as fiveoldSCH, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'te.id =2 and ch.gender =0 then 1 else 0 end) as fiveoldGSCH, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'te.id =2 and sp.id =4 then 1 else 0 end) as fiveoldSpecSCH, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d5 and :End_d and ' +
+        'te.id =2 and ch.gender =0 and sp.id =4 then 1 else 0 end) as fiv' +
+        'eoldSpecGSCH, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =3 then 1 else 0 end) as PTU, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =3 and ch.gender =0 then 1 else 0 end) as PtuG,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =3 and sp.id =4 then 1 else 0 end) as PtuSpec, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =3 and ch.gender =0 and sp.id =4 then 1 else 0 end) as ' +
+        'PtuSpecG, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =4 then 1 else 0 end) as VNZ, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =4 and ch.gender =0 then 1 else 0 end) as VNZG, '
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =4 and sp.id =4 then 1 else 0 end) as VNZSpec,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =4 and ch.gender =0 and sp.id =4 then 1 else 0 end) as ' +
+        'VNZSpecG,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =0 then 1 else 0 end) as NotEdu,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =0 and ch.gender =0 then 1 else 0 end) as NotEduG,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =0 and sp.id =4 then 1 else 0 end) as NotEduSpec,'
+      
+        '    Sum( Case When ch.Birthday BETWEEN :Start_d and  :Start_D5 a' +
+        'nd te.id =0 and ch.gender =0 and sp.id =4 then 1 else 0 end) as ' +
+        'NotEduSpecG'
+      '    from education ed'
+      '    Left outer join Children ch on ch.id = ed.id_child'
+      '    Left outer Join Schools Sc On ed.Id_zaklad = sc.id'
+      '    Left outer Join Types_education te On Sc.id_Type = te.id'
+      '    left outer Join Special Sp on ed.Id_Special = Sp.id'
+      '    where ed.Years = :Years and ed.id_zaklad<>179 and'
+      '    ch.Birthday BETWEEN :Start_d and :End_d')
+    Left = 408
+    Top = 96
+    ParamData = <
+      item
+        Name = 'START_D5'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2012'
+      end
+      item
+        Name = 'END_D'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2013'
+      end
+      item
+        Name = 'START_D'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2000'
+      end
+      item
+        Name = 'YEARS'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '2018'
+      end>
+  end
+end

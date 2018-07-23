@@ -1,0 +1,811 @@
+unit formDB;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
+  Vcl.ComCtrls, Vcl.ToolWin, Data.DB, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids,
+  FireDAC.Stan.Intf, FireDAC.Stan.Param, FireDAC.Phys.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, System.UITypes,
+  comobj;
+
+type
+  TDBForm = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    Splitter1: TSplitter;
+    masterGrid: TDBGrid;
+    ToolButton13: TToolButton;
+    ToolButton14: TToolButton;
+    trWrite: TFDTransaction;
+    qryMaster: TFDQuery;
+    MasterSource: TDataSource;
+    qryEdu: TFDQuery;
+    dsEDU: TDataSource;
+    qryREG: TFDQuery;
+    dsREG: TDataSource;
+    ActionList1: TActionList;
+    actAddChild: TAction;
+    actEditChild: TAction;
+    actDeleteChild: TAction;
+    ToolButton3: TToolButton;
+    actRefresh: TAction;
+    actAddEdu: TAction;
+    actDeleteEdu: TAction;
+    actEditEdu: TAction;
+    _opg_: TOpenDialog;
+    actImportExcel: TAction;
+    ToolButton15: TToolButton;
+    ToolButton16: TToolButton;
+    ExcImp: TFDQuery;
+    qryTYPEedu: TFDQuery;
+    qryZakl: TFDQuery;
+    ToolBar2: TToolBar;
+    DBGrid1: TDBGrid;
+    Splitter2: TSplitter;
+    ToolBar3: TToolBar;
+    DBGrid2: TDBGrid;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
+    ToolButton11: TToolButton;
+    ToolButton12: TToolButton;
+    ToolButton17: TToolButton;
+    actAddAddress: TAction;
+    actEditAddress: TAction;
+    actDeleteAddress: TAction;
+    procedure FormActivate(Sender: TObject);
+    procedure RefreshDataSet(qry: TFDQuery);
+    procedure actAddChildExecute(Sender: TObject);
+    procedure AddChildEditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure AddressAdditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure AddresseditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure ShowRegForm(Sender: TObject);
+    procedure EditChildEditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure actEditChildExecute(Sender: TObject);
+    procedure actDeleteChildExecute(Sender: TObject);
+    procedure DeleteAddress(Sender: TObject);
+    procedure actRefreshExecute(Sender: TObject);
+    procedure ToolButton8Click(Sender: TObject);
+    procedure ShowEditRegForm(Sender: TObject);
+    procedure actEditEduExecute(Sender: TObject);
+    procedure ShowAddEduForm(Sender: TObject);
+    procedure EduAdditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure ShowEditEduForm(Sender: TObject);
+    procedure EduEditorClose(Sender: TObject; var Action: TCloseAction);
+    procedure DeleteEdu(Sender: TObject);
+    procedure _read_file(filename: string);
+    procedure ToolButton15Click(Sender: TObject);
+    procedure ToolButton9Click(Sender: TObject);
+    procedure ToolButton10Click(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DBForm: TDBForm;
+  XLApp, Sheet, Range: OLEVariant;
+
+implementation
+
+{$R *.dfm}
+
+uses DModule, Main, Add, EditReg, DateUtils, EditEduc;
+
+function _get_value(x, y: integer): string;
+begin
+  Result := VarToStr(XLApp.Cells.Item[x, y].Value);
+end;
+
+procedure TDBForm._read_file(filename: string);
+var
+  i, k, kSch, st, cph, Ch_Id, SchoolsID, TypeEduID, EduID: integer;
+  fL: TStringList;
+  tStr, sn, fn, ln, Bd: String;
+  aSch: Variant;
+  lBd: Boolean;
+
+
+
+begin
+//  try
+    //если Эксель запущен, то получаю доступ к процессу...
+ //   XLApp:=GetActiveOleObject('Excel.Application');
+//  except
+    //если Эксель не запущен, то создаю процесс...
+    XLApp:=CreateOleObject('Excel.Application');
+//  end;
+
+  XLApp.Visible := False;
+  XLApp.Workbooks.Open(filename);
+  Sheet := XLApp.Workbooks[ExtractFileName(filename)].WorkSheets[1];
+  Range := Sheet.UsedRange;      // определяем границы данных в Екселе
+  trWrite.StartTransaction;     // Стартуем транзакцию
+  fL := TStringList.Create;     // В этот строковый список будем собирать слова
+  fL.Delimiter := ',';          //устанавливаем разделитель для слов в полях
+
+  try
+    qryTYPEedu.Open();
+    qryZakl.Open();
+     for i := 4 to Range.Rows.Count do        //Начинаем проход с 4-й строки
+        begin
+        sn := '';                 //Обнуляем значения полей для текущей строки
+        fn := '';
+        ln := '';
+        tStr := '';               //Это строка для перечня полей поиска
+        lBd := False;
+        fL.DelimitedText := _get_value(i, 1);       // Считываем ФИО
+
+        for k := 0 to fL.Count - 1 do         // Разбираем его на слова
+        Begin
+          if fL[k][1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] then
+          Begin
+            lBd := True;          // Если День рождения в одном поле с ФИО, то мы его нашли
+            Bd := fL[k];
+            tStr := tStr + ';BIRTHDAY';
+            Break
+          End
+          Else
+          Begin
+            case k of
+              0:
+                Begin
+                  sn := fL[k];
+                  tStr := 'SURNAME';
+                End;
+              1:
+                Begin
+                  fn := fL[k];
+                  tStr := tStr + ';FIRSTNAME';
+                End;
+              2:
+                Begin
+                  ln := fL[k];
+                  tStr := tStr + ';LASTNAME';
+                End;
+            end;
+          End;
+        End;
+        if not lBd then       // Если День рождения не был указан в ФИО, поищем его в своей колонке
+        Begin
+          Bd := _get_value(i, 2);
+          tStr := tStr + ';BIRTHDAY';
+          kSch := fL.Count;
+        End
+      else kSch := fL.Count - 1;         //Определим номер слова для Дня рождения
+      if kSch > 0 then     //Еси не было ФИО, то нечего писать
+      Begin
+        aSch := VarArrayCreate([0, kSch], varVariant);       // определяем размер вариантного массива для значений поиска
+        case kSch of      // Заполняем его
+        1:
+          aSch[0] := sn;
+        2:
+          Begin
+            aSch[0] := sn;
+            aSch[1] := fn;
+          End;
+        3:
+          Begin
+            aSch[0] := sn;
+            aSch[1] := fn;
+            aSch[2] := ln;
+          End;
+        End;
+
+        try               // обработаем возможную ошибку по некорректной дате
+            aSch[kSch] := StrToDate(Bd)
+        except
+             aSch[kSch] := Date
+         end;
+        fL.Clear;
+
+        if not qryMaster.Locate(tStr, aSch, [loCaseInsensitive, loPartialKey]) then         //Поищем в базе данных, нет ли  такого уже
+        Begin
+          if UpperCase(Trim(_get_value(i, 5))) = 'Ч' then  st := 1  else st := 0;    //Пол ребенка
+
+          ExcImp.Close();
+          ExcImp.SQL.Text :='INSERT INTO NEW_TABLE ( surname, firstname, lastname, birthday, gender, Parents, Phone)'+
+           ' VALUES ( :surname, :firstname, :LASTNAME, :birthday, :gender, :Parents,:Phone)  RETURNING ID';
+          ExcImp.ParamByName('GENDER').AsInteger := st;                  //Если нет передаем параметры процедуре добавления записи
+          ExcImp.ParamByName('SURNAME').AsSTring := sn;
+          ExcImp.ParamByName('FIRSTNAME').AsSTring := fn;
+          ExcImp.ParamByName('LASTNAME').AsSTring := ln;
+          ExcImp.ParamByName('BIRTHDAY').AsDate := StrToDate(Bd);
+          ExcImp.ParamByName('PARENTS').AsSTring := _get_value(i, 4);
+          ExcImp.ParamByName('PHONE').AsSTring := _get_value(i, 6);      //Родители
+          ExcImp.Open();                        //Вызываем процедуру добавления
+          Ch_Id := ExcImp.Fields[0].value ;
+          ExcImp.Close();
+          qryMaster.Refresh;
+        End
+        Else  Ch_id :=  qryMaster.Fields[0].Value;
+
+        VarClear(aSch);
+        aSch := VarArrayCreate([0, 2], varVariant);
+            aSch[0] := Ch_id;
+            aSch[1] := trim(_get_value(i, 3));
+
+
+        if not qryReg.Locate('ID_CHILD; ADDRESS;', aSch, [loCaseInsensitive, loPartialKey]) then         //Поищем в базе адресов
+        Begin
+
+          ExcImp.Close();
+          ExcImp.SQL.Text :='INSERT INTO ADDRESS ( ID_CHILD, ADDRESS, YEARS)'+
+           ' VALUES ( :ID_CHILD, :address, :YEARS) RETURNING ID';
+          ExcImp.ParamByName('ID_CHILD').AsInteger := Ch_id;                  //Если нет передаем параметры процедуре добавления записи
+          ExcImp.ParamByName('ADDRESS').AsSTring := aSch[1];
+          ExcImp.ParamByName('YEARS').AsInteger :=  YearOf(Now);
+          ExcImp.Open();                        //Вызываем процедуру добавления
+          ExcImp.Close();
+          qryREG.Refresh();
+        End;
+        VarClear(aSch);
+
+        aSch := VarArrayCreate([0, 1], varVariant);
+        aSch[0] := _get_value(i, 7);
+
+        if not qryZAKL.locate('ZAKLAD', aSch, [loCaseInsensitive, loPartialKey]) then         //Поищем в базе адресов
+        Begin
+
+          ExcImp.Close();
+          ExcImp.SQL.Text :='INSERT INTO SCHOOLS ( ZAKLAD) VALUES ( :ZAKLAD) RETURNING ID';
+          ExcImp.ParamByName('ZAKLAD').AsString := aSch[0];                  //Если нет передаем параметры процедуре добавления записи
+          ExcImp.Open();
+          SchoolsID := ExcImp.FieldByName('ID').Value;                       //Вызываем процедуру добавления;
+          ExcImp.Close();
+          qryZAKL.Refresh;                                                 //когда все прошли, завершаем транзакцию
+
+        End
+        Else  SchoolsID :=  qryZAKL.Fields[0].Value;
+
+        VarClear(aSch);
+
+        if not  qryTypeEdu.Locate('TYPE_EDU', _get_value(i, 8), [loCaseInsensitive, loPartialKey]) then         //Поищем в базе адресов
+        Begin
+
+          ExcImp.Close();
+          ExcImp.SQL.Text :='INSERT INTO TYPES_EDUCATION ( TYPE_EDU) VALUES ( :TYPE_EDU) RETURNING ID';
+          ExcImp.ParamByName('TYPE_EDU').AsString := _get_value(i, 8);       //Если нет передаем параметры процедуре добавления записи
+          ExcImp.Open();
+          TypeEduID := ExcImp.FieldByName('ID').Value;                       //Вызываем процедуру добавления;
+          ExcImp.Close();
+          qryTypeEdu.Refresh
+        End
+        Else  TypeEduID :=  qryTYPEedu.Fields[0].Value;
+
+                                                                   //очищаем вариантый массив, для след. строки
+        aSch := VarArrayCreate([0, 2], varVariant);
+            aSch[0] := ch_id;
+            aSch[1] := YearOf(Now);
+
+        ExcImp.Close();
+        if not qryEdu.Locate('ID_CHILD; YEARS;', aSch, [loCaseInsensitive, loPartialKey]) then         //Поищем в базе адресов
+         ExcImp.SQL.Text :='INSERT INTO EDUCATION ( ID_CHILD, ID_ZAKLAD, ID_TYPE, YEARS, Special)'+
+          ' VALUES ( :ID_CHILD, :ID_ZAKLAD, :ID_TYPE, :YEARS, :special) RETURNING ID'
+        else
+        begin
+         ExcImp.SQL.Text :='Update EDUCATION set ID_CHILD=:ID_CHILD, ID_ZAKLAD=:ID_ZAKLAD,'+
+        ' ID_TYPE=:ID_TYPE, YEARS=:YEARS, Special=:Special WHERE ID = :ID_OLD RETURNING ID';
+         ExcImp.ParamByName('ID_OLD').AsInteger := qryEdu.FieldByName('ID').value;
+        end;
+
+        ExcImp.ParamByName('ID_CHILD').AsInteger := ch_id;
+        ExcImp.ParamByName('ID_ZAKLAD').AsInteger := SchoolsID;
+        ExcImp.ParamByName('ID_TYPE').AsInteger := TypeEduID;
+        ExcImp.ParamByName('YEARS').AsInteger := aSch[1];                 //Если нет передаем параметры процедуре добавления записи
+        if UpperCase(Trim(_get_value(i, 9))) = 'ТАК' then  st := 1  else st := 0;    //Пол ребенка
+        ExcImp.ParamByName('Special').AsInteger := st;
+        ExcImp.Open();
+        ExcImp.Close();
+        qryEdu.Refresh;
+        VarClear(aSch);
+      End;
+
+    End;
+   qryTypeEdu.Close();
+   qryZAKL.Close();
+   trWrite.Commit;                                                    //когда все прошли, завершаем транзакцию
+
+    XLApp.Workbooks.Close; //закрываю книги экселя
+    XLApp.Quit;  //закрываю эксель
+    XLApp:=UnAssigned
+
+    except
+  if trWrite.Active then                                               //если что-то не так, то откатываем
+    Begin
+       trWrite.Rollback;
+     End;
+end;
+End;
+procedure TDBForm.RefreshDataSet(qry: TFDQuery);
+begin
+  if qry.Active then
+    qry.Refresh
+  else
+    qry.Open;
+end;
+
+procedure TDBForm.ToolButton10Click(Sender: TObject);
+begin
+DeleteAddress(self);
+end;
+
+procedure TDBForm.ToolButton15Click(Sender: TObject);
+begin
+  _opg_.Execute();
+  _read_file(_opg_.filename);
+end;
+
+procedure TDBForm.ToolButton8Click(Sender: TObject);
+begin
+    ShowRegForm(self);
+end;
+
+procedure TDBForm.ToolButton9Click(Sender: TObject);
+begin
+ShowEditRegForm(self);
+end;
+
+procedure TDBForm.actDeleteChildExecute(Sender: TObject);
+begin
+  if MessageDlg('Видалити запис?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then
+  begin
+
+    trWrite.StartTransaction;
+    try
+     ExcImp.Close();
+          ExcImp.SQL.Text :='DELETE FROM CHILDREN WHERE ID = :ID_OLD  RETURNING ID';
+          ExcImp.ParamByName('ID_OLD').AsInteger := qryMaster.FieldByName('ID').Value;                  //Если нет передаем параметры процедуре добавления записи
+
+    ExcImp.open;
+    trWrite.Commit;
+    qryMaster.Refresh;
+
+
+    except
+      on E: Exception do
+      begin
+        if trWrite.Active then
+          trWrite.Rollback;
+        Application.ShowException(E);
+      end;
+    end;
+  end;
+end;
+
+
+procedure TDBForm.DeleteEdu(Sender: TObject);
+begin
+  if MessageDlg('Видалити запис?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then
+  begin
+    qryEdu.Edit;
+    qryEdu.Delete;
+    qryEdu.Post;
+
+    trWrite.StartTransaction;
+    try
+
+      qryEdu.CommitUpdates;
+      trWrite.Commit;
+      qryEdu.Refresh;
+    except
+      on E: Exception do
+      begin
+        if trWrite.Active then
+          trWrite.Rollback;
+        Application.ShowException(E);
+      end;
+    end;
+  end;
+end;
+
+procedure TDBForm.DeleteAddress(Sender: TObject);
+begin
+  if MessageDlg('Видалити запис?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+  then
+  begin
+    qryREG.Edit;
+    qryREG.Delete;
+    qryREG.Post;
+
+    trWrite.StartTransaction;
+    try
+
+      qryREG.CommitUpdates;
+      trWrite.Commit;
+      qryREG.Refresh;
+    except
+      on E: Exception do
+      begin
+        if trWrite.Active then
+          trWrite.Rollback;
+        Application.ShowException(E);
+      end;
+    end;
+  end;
+end;
+
+procedure TDBForm.ShowAddEduForm(Sender: TObject);
+var
+
+
+  xAddEduForm: TEditEdu;
+begin
+
+
+  xAddEduForm := TEditEdu.Create(self);
+  try
+    xAddEduForm.OnClose := EduAdditorClose;
+    xAddEduForm.Caption := 'Додати навчальний заклад';
+
+    xAddEduForm.DBLookupComboBox1.KeyValue := qryEdu.FieldByName('ID_TYPE').value;
+    xAddEduForm.DBLookupComboBox2.KeyValue := qryEdu.FieldByName('ID_ZAKLAD').value;
+    xAddEduForm.edYear.Text := IntToStr(YearOf(now));
+    xAddEduForm.ShowModal;
+  finally
+    xAddEduForm.Free;
+  end;
+end;
+
+procedure TDBForm.ShowRegForm(Sender: TObject);
+var
+  xEditRegForm: TEditAddress;
+begin
+  xEditRegForm := TEditAddress.Create(self);
+  try
+    xEditRegForm.OnClose := AddressAdditorClose;
+    xEditRegForm.Caption := 'Додати адресу';
+    qryREG.Insert;
+    xEditRegForm.ShowModal;
+  finally
+    xEditRegForm.Free;
+  end;
+end;
+
+procedure TDBForm.EduAdditorClose(Sender: TObject; var Action: TCloseAction);
+var
+xAddEduForm: TEditEdu;
+begin
+  if TEditEdu(Sender).ModalResult <> mrOK then
+  begin
+    Action := caFree;
+    Exit;
+  end;
+
+  trWrite.StartTransaction;
+try
+   ExcImp.Close;
+   ExcImp.SQL.Text :='INSERT INTO EDUCATION ( ID_CHILD, ID_ZAKLAD, ID_TYPE, YEARS)'+
+          ' VALUES ( :ID_CHILD, :ID_ZAKLAD, :ID_TYPE, :YEARS) RETURNING ID';
+   ExcImp.ParamByName('ID_CHILD').AsInteger := qryMaster.FieldByName('ID').Value;
+   ExcImp.ParamByName('ID_ZAKLAD').AsInteger := xAddEduForm.DBLookupComboBox2.KeyValue;
+   ExcImp.ParamByName('ID_TYPE').AsInteger := xAddEduForm.DBLookupComboBox1.KeyValue;
+   ExcImp.ParamByName('YEARS').AsInteger := StrToInt(xAddEduForm.edYear.text);                 //Если нет передаем параметры процедуре добавления записи
+   ExcImp.Open();
+   ExcImp.Close();
+
+   trWrite.Commit;
+   qryEdu.Refresh;
+except
+  if trWrite.Active then                                               //если что-то не так, то откатываем
+    Begin
+       trWrite.Rollback;
+     End;
+end;
+end;
+
+procedure TDBForm.AddressAdditorClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if TEditAddress(Sender).ModalResult <> mrOK then
+  begin
+    qryREG.Cancel;
+    qryREG.CancelUpdates;
+
+    Action := caFree;
+    Exit;
+  end;
+
+  try
+
+    qryREG.Post;
+
+    trWrite.StartTransaction;
+    if (qryREG.ApplyUpdates = 0) then
+    begin
+
+      qryREG.CommitUpdates;
+      trWrite.Commit;
+      qryREG.Refresh;
+    end
+    else
+    begin
+      raise Exception.Create(qryREG.RowError.Message);
+    end;
+
+    Action := caFree;
+  except
+    on E: Exception do
+    begin
+      if trWrite.Active then
+        trWrite.Rollback;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+  end;
+
+end;
+
+procedure TDBForm.ShowEditEduForm(Sender: TObject);
+var
+  xEditEduForm: TeditEdu;
+begin
+  xEditEduForm := TeditEdu.Create(self);
+  try
+    xEditEduForm.OnClose := EduEditorClose;
+    xEditEduForm.Caption := 'Редагувати навчальний заклад';
+
+
+
+    qryEdu.Edit;
+    xEditEduForm.ShowModal;
+  finally
+    xEditEduForm.Free;
+  end;
+end;
+
+procedure TDBForm.ShowEditRegForm(Sender: TObject);
+var
+  xEditRegForm: TEditAddress;
+begin
+  xEditRegForm := TEditAddress.Create(self);
+  try
+    xEditRegForm.OnClose := AddresseditorClose;
+    xEditRegForm.Caption := 'Редагувати адресу';
+
+    qryREG.Edit;
+    xEditRegForm.ShowModal;
+  finally
+    xEditRegForm.Free;
+  end;
+end;
+
+procedure TDBForm.EduEditorClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if TEditEdu(Sender).ModalResult <> mrOK then
+  begin
+    qryEdu.Cancel;
+    qryEdu.CancelUpdates;
+
+    Action := caFree;
+    Exit;
+  end;
+
+  try
+
+    qryEdu.Post;
+
+    trWrite.StartTransaction;
+    if (qryEdu.ApplyUpdates = 0) then
+    begin
+
+      qryEdu.CommitUpdates;
+      trWrite.Commit;
+      qryEdu.Refresh;
+    end
+    else
+    begin
+      raise Exception.Create(qryEdu.RowError.Message);
+    end;
+
+    Action := caFree;
+  except
+    on E: Exception do
+    begin
+      if trWrite.Active then
+        trWrite.Rollback;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+  end;
+
+end;
+
+procedure TDBForm.AddresseditorClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if TEditAddress(Sender).ModalResult <> mrOK then
+  begin
+    qryREG.Cancel;
+    qryREG.CancelUpdates;
+
+    Action := caFree;
+    Exit;
+  end;
+
+  try
+
+    qryREG.Post;
+
+    trWrite.StartTransaction;
+    if (qryREG.ApplyUpdates = 0) then
+    begin
+
+      qryREG.CommitUpdates;
+      trWrite.Commit;
+      qryREG.Refresh;
+    end
+    else
+    begin
+      raise Exception.Create(qryREG.RowError.Message);
+    end;
+
+    Action := caFree;
+  except
+    on E: Exception do
+    begin
+      if trWrite.Active then
+        trWrite.Rollback;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+  end;
+
+end;
+
+procedure TDBForm.actEditChildExecute(Sender: TObject);
+var
+  xAddForm: TAddForm;
+begin
+  xAddForm := TAddForm.Create(self);
+  try
+      xAddForm.OnClose := EditChildEditorClose;
+    xAddForm.Caption := 'Редагування запису';
+    xAddForm.SetDataChild(qryMaster.FieldByName('SURNAME').AsSTring,
+      qryMaster.FieldByName('FIRSTNAME').AsSTring,
+      qryMaster.FieldByName('LASTNAME').AsSTring,
+      qryMaster.FieldByName('INFO').AsSTring,
+      qryMaster.FieldByName('BIRTHDAY').AsDateTime,
+      qryMaster.FieldByName('GENDER').AsInteger);
+
+    xAddForm.ShowModal;
+  finally
+    xAddForm.Free;
+  end;
+end;
+
+procedure TDBForm.actEditEduExecute(Sender: TObject);
+begin
+ShowEditEduForm(self);
+
+end;
+
+procedure TDBForm.actRefreshExecute(Sender: TObject);
+begin
+  qryMaster.Refresh;
+end;
+
+procedure TDBForm.EditChildEditorClose(Sender: TObject;
+  var Action: TCloseAction);
+var
+  xAddForm: TAddForm;
+begin
+  xAddForm := TAddForm(Sender);
+
+  if xAddForm.ModalResult <> mrOK then
+  begin
+    Action := caFree;
+    Exit;
+  end;
+
+  trWrite.StartTransaction;
+  try
+
+   ExcImp.Close();
+          ExcImp.SQL.Text :='UPDATE CHILDREN Set surname = :SURNAME, firstname = :firstname, '+
+          'lastname = :lastname, birthday = :birthday, gender = :gender, INFO = :INFO'+
+          ' where id = :Id_old Returning Id';
+          ExcImp.ParamByName('GENDER').AsInteger := xAddForm.ComboBox1.ItemIndex;                  //Если нет передаем параметры процедуре добавления записи
+          ExcImp.ParamByName('SURNAME').AsSTring := xAddForm.edtSurname.text;
+          ExcImp.ParamByName('FIRSTNAME').AsSTring := xAddForm.edtFirstname.text;
+          ExcImp.ParamByName('LASTNAME').AsSTring := xAddForm.edtLastname.text;
+          ExcImp.ParamByName('BIRTHDAY').AsDate := xAddForm.DateTimePicker1.Date;
+          ExcImp.ParamByName('INFO').AsSTring := xAddForm.edtPrimitka.Text;
+          ExcImp.ParamByName('ID_OLD').AsString := qryMaster.FieldByName('ID').Value;
+
+    ExcImp.open;
+
+    trWrite.Commit;
+
+    qryMaster.Refresh;
+
+    Action := caFree;
+  except
+    on E: Exception do
+    begin
+      if trWrite.Active then
+        trWrite.Rollback;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+  end;
+end;
+
+procedure TDBForm.actAddChildExecute(Sender: TObject);
+var
+  xAddForm: TAddForm;
+begin
+  xAddForm := TAddForm.Create(self);
+  try
+    xAddForm.Caption := 'Додати запис';
+    xAddForm.OnClose := AddChildEditorClose;
+    xAddForm.ShowModal;
+  finally
+    xAddForm.Free;
+  end;
+end;
+
+procedure TDBForm.AddChildEditorClose(Sender: TObject;
+  var Action: TCloseAction);
+var
+  xAddForm: TAddForm;
+
+begin
+  xAddForm := TAddForm(Sender);
+
+  if xAddForm.ModalResult <> mrOK then
+  begin
+    Action := caFree;
+    Exit;
+  end;
+
+  trWrite.StartTransaction;
+  try
+    ExcImp.Close();
+          ExcImp.SQL.Text :='INSERT INTO CHILDREN ( surname, firstname, lastname, birthday, gender, info)'+
+           ' VALUES ( :surname, :firstname, :LASTNAME, :birthday, :gender, :info)  RETURNING ID';
+          ExcImp.ParamByName('GENDER').AsInteger := xAddForm.ComboBox1.ItemIndex;                  //Если нет передаем параметры процедуре добавления записи
+          ExcImp.ParamByName('SURNAME').AsSTring := xAddForm.edtSurname.text;
+          ExcImp.ParamByName('FIRSTNAME').AsSTring := xAddForm.edtFirstname.text;
+          ExcImp.ParamByName('LASTNAME').AsSTring := xAddForm.edtLastname.text;
+          ExcImp.ParamByName('BIRTHDAY').AsDate := xAddForm.DateTimePicker1.Date;
+          ExcImp.ParamByName('INFO').AsSTring :=  xAddForm.edtPrimitka.text;
+
+    ExcImp.open;
+
+    trWrite.Commit;
+    qryMaster.Refresh;
+
+    Action := caFree;
+  except
+    on E: Exception do
+    begin
+      if trWrite.Active then
+        trWrite.Rollback;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+  end;
+end;
+
+procedure TDBForm.FormActivate(Sender: TObject);
+begin
+  qryMaster.Open;
+  qryEdu.Open;
+  qryREG.Open;
+
+end;
+
+end.

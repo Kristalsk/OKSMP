@@ -1,0 +1,63 @@
+unit AddSpecForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.Buttons, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids, System.Actions, Vcl.ActnList,
+  Vcl.ComCtrls, Vcl.ToolWin;
+
+type
+  TAddSpecialForm = class(TForm)
+    DBGrid1: TDBGrid;
+    lbHeadCategory: TLabel;
+    FDQuery1: TFDQuery;
+    DataSource1: TDataSource;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ActionList1: TActionList;
+    addSpecCategory: TAction;
+    exit: TAction;
+    FDQuery2: TFDQuery;
+    trspec: TFDTransaction;
+    procedure addSpecCategoryExecute(Sender: TObject);
+    procedure exitExecute(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  AddSpecialForm: TAddSpecialForm;
+
+implementation
+
+{$R *.dfm}
+
+uses DModule, formDB;
+
+procedure TAddSpecialForm.addSpecCategoryExecute(Sender: TObject);
+begin
+FDQuery2.Close;
+FDQuery2.SQL.Text:='Insert into special (info) values ( ''введіть категорію'') returning id';
+FDQuery2.Open();
+FDQuery2.Close;
+FDQuery1.Refresh;
+end;
+
+procedure TAddSpecialForm.exitExecute(Sender: TObject);
+begin
+Close;
+end;
+
+
+
+end.

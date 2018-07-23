@@ -1,0 +1,319 @@
+unit reportForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, Vcl.ComCtrls,
+  Vcl.ToolWin, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.StdCtrls,
+  Vcl.DBCtrls,ShellAPI, LibXL, inifiles;
+
+type
+  TReportF = class(TForm)
+    qryCombo: TFDQuery;
+    DataSource1: TDataSource;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    qryReport: TFDQuery;
+    Edit1: TEdit;
+    lbNavchRik: TLabel;
+    procedure ToolButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  ReportF: TReportF;
+
+implementation
+
+{$R *.dfm}
+
+uses DModule;
+
+procedure TReportF.ToolButton1Click(Sender: TObject);
+var
+  Book: TxmlBook;
+  Sheet: TSheet;
+  xAppPath, scells, Years: string;
+  pth : pAnsichar;
+  xIniFile: TIniFile;
+  I,j: Integer;
+
+
+begin
+
+  years := 'Число повних років станом на 01.09.'+ trim(Edit1.Text) + ' року:';
+  qryReport.Close;
+  qryReport.SQL.Text :=
+    'select '+
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =1 then 1 else 0 end ) as Kol, '+
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =1 and ch.gender =0 then 1 else 0 end ) as Girls, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =1 and sp.id =4 then 1 else 0 end ) as Spec, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =1 and ch.gender =0 and sp.id =4 then 1 else 0 end) as SpecG, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 then 1 else 0 end) as fiveold, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and ch.gender =0 then 1 else 0 end) as fiveoldG, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and sp.id =4 then 1 else 0 end) as fiveoldSpec, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and ch.gender =0 and sp.id =4 then 1 else 0 end) as fiveoldSpecG, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and te.id =2 then 1 else 0 end) as fiveoldSCH, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and te.id =2 and ch.gender =0 then 1 else 0 end) as fiveoldGSCH, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and te.id =2 and sp.id =4 then 1 else 0 end) as fiveoldSpecSCH, ' +
+    'Sum( Case When ch.Birthday >= :Start_d5 and te.id =2 and ch.gender =0 and sp.id =4 then 1 else 0 end) as fiveoldSpecGSCH, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =3 then 1 else 0 end) as PTU, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =3 and ch.gender =0 then 1 else 0 end) as PtuG, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =3 and sp.id =4 then 1 else 0 end) as PtuSpec, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =3 and ch.gender =0 and sp.id =4 then 1 else 0 end) as PtuSpecG, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =4 then 1 else 0 end) as VNZ, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =4 and ch.gender =0 then 1 else 0 end) as VNZG, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =4 and sp.id =4 then 1 else 0 end) as VNZSpec, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =4 and ch.gender =0 and sp.id =4 then 1 else 0 end) as VNZSpecG, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =0 then 1 else 0 end) as NotEdu, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =0 and ch.gender =0 then 1 else 0 end) as NotEduG, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =0 and sp.id =4 then 1 else 0 end) as NotEduSpec, ' +
+    'Sum( Case When ch.Birthday <= :Start_D5 and te.id =0 and ch.gender =0 and sp.id =4 then 1 else 0 end) as NotEduSpecG ' +
+    'from education ed ' +
+    'Left outer join Children ch on ch.id = ed.id_child ' +
+    'Left outer Join Schools Sc On ed.Id_zaklad = sc.id ' +
+    'Left outer Join Types_education te On Sc.id_Type = te.id ' +
+    'left outer Join Special Sp on ed.Id_Special = Sp.id ' +
+    'where ed.Years = :Years and ch.Birthday BETWEEN :Start_d and :End_d';
+
+  qryReport.ParamByName('End_d').AsDate :=
+    EncodeDate(word( Strtoint(trim(Edit1.Text))) - 5, 09, 01);
+  qryReport.ParamByName('Start_d5').AsDate :=
+    EncodeDate(word(strtoint(trim(Edit1.Text))) - 6, 09, 01);
+  qryReport.ParamByName('Start_d').AsDate :=
+    EncodeDate(word(strtoint(trim(Edit1.Text))) - 18, 09, 01);
+  qryReport.ParamByName('Years').Asstring := trim(Edit1.Text);
+  qryReport.open;
+
+  Book := TxmlBook.Create;
+  Book.setKey('Yuri Komarov', 'windows-2f212f080fceeb086db46562acrbgct2');
+  xAppPath := ExtractFileDir(Application.ExeName) + PathDelim;
+  Book.load( PAnsiChar(AnsiString(xAppPath + 'Excel\шаблоны\shablon1.xlsx')));
+//  Book.addSheet('111');
+  Sheet := Book.getSheet(0);
+  xIniFile := TIniFile.Create(xAppPath + 'config.ini');
+  sCells:= xIniFile.ReadString('Rekvizits', 'EDRPOU','');
+
+  for j := 1 to scells.Length do  Sheet.writeStr(0,27+j, PAnsiChar(AnsiString(sCells[j])));
+
+    sCells:= xIniFile.ReadString('Rekvizits', 'NazvaOrg','');
+    Sheet.writeStr(15, 6, PAnsiChar(AnsiString(sCells)));
+
+    sCells:= xIniFile.ReadString('Rekvizits', 'INDEX','') + ', ' +
+    xIniFile.ReadString('Rekvizits', 'OBLAST','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'GOROD','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'STREET','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'NUMHOUSE','');
+    Sheet.writeStr(19, 1, PAnsiChar(AnsiString(sCells)));
+
+    sCells:= xIniFile.ReadString('Rekvizits', 'FactINDEX','') + ', ' +
+    xIniFile.ReadString('Rekvizits', 'FactOBLAST','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'FactGOROD','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'FactSTREET','')+ ', ' +
+    xIniFile.ReadString('Rekvizits', 'FactNUMHOUSE','');
+    Sheet.writeStr(25, 1, PAnsiChar(AnsiString(sCells)));
+
+    Sheet.writeStr(72, 21, xIniFile.ReadString('Rekvizits', 'Director',''));
+    Sheet.writeStr(75, 1, xIniFile.ReadString('Rekvizits', 'Vidpovida4',''));
+    Sheet.writeStr(78, 4, xIniFile.ReadString('Rekvizits', 'tel',''));
+    Sheet.writeStr(78, 14, xIniFile.ReadString('Rekvizits', 'fax',''));
+    Sheet.writeStr(78, 28, xIniFile.ReadString('Rekvizits', 'mail',''));
+
+
+
+  xIniFile.Free;
+  qryReport.First;
+
+// while not qryReport.Eof do
+// Begin
+//   case qryReport.FieldByName('Typ').Value of
+//   1: Begin
+// //     sheet.insertRow(1,42);
+
+      Sheet.writeNum(41,14,qryReport.FieldByName('Kol').Value);
+      Sheet.writeNum(41,17,qryReport.FieldByName('Girls').Value);
+      Sheet.writeNum(41,26,qryReport.FieldByName('Spec').Value);
+      Sheet.writeNum(41,30,qryReport.FieldByName('Specg').Value);
+
+      Sheet.writeNum(36,14,qryReport.FieldByName('fiveold').Value);
+      Sheet.writeNum(36,17,qryReport.FieldByName('fiveoldG').Value);
+      Sheet.writeNum(36,26,qryReport.FieldByName('fiveoldSpec').Value);
+      Sheet.writeNum(36,30,qryReport.FieldByName('fiveoldSpecG').Value);
+
+      Sheet.writeNum(37,14,qryReport.FieldByName('fiveoldSCH').Value);
+      Sheet.writeNum(37,17,qryReport.FieldByName('fiveoldGSCH').Value);
+      Sheet.writeNum(37,26,qryReport.FieldByName('fiveoldSpecSCH').Value);
+      Sheet.writeNum(37,30,qryReport.FieldByName('fiveoldSpecGSCH').Value);
+
+      Sheet.writeNum(44,14,qryReport.FieldByName('PTU').Value);
+      Sheet.writeNum(44,17,qryReport.FieldByName('PTUG').Value);
+      Sheet.writeNum(44,26,qryReport.FieldByName('PTUSpec').Value);
+      Sheet.writeNum(44,30,qryReport.FieldByName('PTUSpecG').Value);
+
+      Sheet.writeNum(45,14,qryReport.FieldByName('VNZ').Value);
+      Sheet.writeNum(45,17,qryReport.FieldByName('VNZG').Value);
+      Sheet.writeNum(45,26,qryReport.FieldByName('VNZSpec').Value);
+      Sheet.writeNum(45,30,qryReport.FieldByName('VNZSpecG').Value);
+
+      Sheet.writeNum(46,14,qryReport.FieldByName('NotEdu').Value);
+      Sheet.writeNum(46,17,qryReport.FieldByName('NotEduG').Value);
+      Sheet.writeNum(46,26,qryReport.FieldByName('NotEduSpec').Value);
+      Sheet.writeNum(46,30,qryReport.FieldByName('NotEduSpecG').Value);
+
+      qryReport.Close;
+     qryReport.SQL.Text :=
+    'select '+
+    'Sum( Case When  (Sp.id =3 or sp.id =4) and te.id = 0 then 1 else 0 end ) as Kol, '+
+    'Sum( Case When  (Sp.id =3 or sp.id =4) and te.id = 0 and ch.gender =0 then 1 else 0 end ) as Girls, ' +
+    'Sum( Case When  sp.id =4 and te.id = 0 then 1 else 0 end ) as Spec, ' +
+    'Sum( Case When  sp.id =4 and te.id = 0 and ch.gender =0 then 1 else 0 end) as SpecG, ' +
+    'Sum( Case When  te.id =0 then 1 else 0 end ) as BezPri4, '+
+    'Sum( Case When  te.id =0 and ch.gender =0 then 1 else 0 end ) as BezPri4G, ' +
+    'Sum( Case When  sp.Id =4 and te.id = 0 then 1 else 0 end ) as BezPri4Spec, ' +
+    'Sum( Case When  sp.Id =4 and te.id = 0 and ch.gender =0 then 1 else 0 end) as BezPri4SpecG, ' +
+    'Sum( Case When  te.id =6 then 1 else 0 end )  as EduBezOS, ' +
+    'Sum( Case When  te.id =6 and ch.gender =0 then 1 else 0 end)  as EduBezOSG, ' +
+    'Sum( Case When  sp.id =4 and te.id = 6 then 1 else 0 end ) as EduBezOSSpec, ' +
+    'Sum( Case When  sp.id =4 and te.id = 6 and ch.gender =0 then 1 else 0 end ) as EduBezOSSpecG, ' +
+    'Sum( Case When  te.id = 7 then 1 else 0 end )  as Spec, ' +
+    'Sum( Case When  te.id = 7 and ch.gender =0 then 1 else 0 end)  as SpecG ' +
+    'from education ed ' +
+    'Left outer join Children ch on ch.id = ed.id_child ' +
+    'Left outer Join Schools Sc On ed.Id_zaklad = sc.id ' +
+    'Left outer Join Types_education te On Sc.id_Type = te.id ' +
+    'left outer Join Special Sp on ed.Id_Special = Sp.id ' +
+    'where ed.Years = :Years and (te.id = 0 or te.id = 6 or te.id =7) and ch.Birthday BETWEEN :Start_d and :End_d';
+
+  qryReport.ParamByName('End_d').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 6, 09, 01);
+  qryReport.ParamByName('Start_d').AsDate := EncodeDate(word(strtoint(trim(Edit1.Text))) - 18, 09, 01);
+  qryReport.ParamByName('Years').Asstring := trim(Edit1.Text);
+  qryReport.open;
+
+      Sheet.writeNum(55,14,qryReport.FieldByName('Kol').Value);
+      Sheet.writeNum(55,17,qryReport.FieldByName('Girls').Value);
+      Sheet.writeNum(55,26,qryReport.FieldByName('Spec').Value);
+      Sheet.writeNum(55,30,qryReport.FieldByName('Specg').Value);
+
+      Sheet.writeNum(56,14,qryReport.FieldByName('BezPri4').Value);
+      Sheet.writeNum(56,17,qryReport.FieldByName('BezPri4G').Value);
+      Sheet.writeNum(56,26,qryReport.FieldByName('BezPri4Spec').Value);
+      Sheet.writeNum(56,30,qryReport.FieldByName('BezPri4SpecG').Value);
+
+      Sheet.writeNum(57,14,qryReport.FieldByName('EduBezOS').Value);
+      Sheet.writeNum(57,17,qryReport.FieldByName('EduBezOSG').Value);
+      Sheet.writeNum(57,26,qryReport.FieldByName('EduBezOSSpec').Value);
+      Sheet.writeNum(57,30,qryReport.FieldByName('EduBezOSSpecG').Value);
+
+      Sheet.writeNum(58,14,qryReport.FieldByName('Spec').Value);
+      Sheet.writeNum(58,17,qryReport.FieldByName('SpecG').Value);
+
+     qryReport.Close;
+     qryReport.SQL.Text :=
+    'select '+
+    'Sum( Case When  ed.id_child is null then 1 else 0 end ) as Kol, '+
+    'Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) as old6, ' +
+    'Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9, ' +
+    'Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14, ' +
+    'Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15, ' +
+    'Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=4 and te.id=0   then 1 else 0 end ) as vseML, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=4 and te.id=0  and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9ML, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=4 and te.id=0  and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14ML, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=4 and te.id=0  and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15ML, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=4 and te.id=0  and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18ML, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=9 and te.id=0  then 1 else 0 end ) as vseOsn, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=9 and te.id=0  and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14Osn, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=9 and te.id=0  and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15Osn, ' +
+    'Sum( Case When  (Select max(ed.classnum) from education ed)=9 and te.id=0  and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18Osn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) then 1 else 0 end ) as vseNoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) as old6NoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9NoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14NoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15NoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18NoML, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) then 1 else 0 end ) as vseNoOsn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) as old6NoOsn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9NoOsn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14NoOsn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15NoOsn, ' +
+    'Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18NoOsn, ' +
+    'Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) as old6G, ' +
+    'Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9G, ' +
+    'Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14G, ' +
+    'Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15G, ' +
+    'Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18G ' +
+    'from education ed ' +
+    'Left outer join Children ch on ch.id = ed.id_child ' +
+    'Left outer Join Schools Sc On ed.Id_zaklad = sc.id ' +
+    'Left outer Join Types_education te On Sc.id_Type = te.id ' +
+    'left outer Join Special Sp on ed.Id_Special = Sp.id ' +
+    'where ed.Years = :Years';
+
+  qryReport.ParamByName('End_d').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 6, 09, 01);
+  qryReport.ParamByName('End_6').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 7, 09, 01);
+  qryReport.ParamByName('End_7_9').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 10, 09, 01);
+  qryReport.ParamByName('End_10_14').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 15, 09, 01);
+  qryReport.ParamByName('End_15').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 16, 09, 01);
+  qryReport.ParamByName('End_16_18').AsDate :=  EncodeDate(word( Strtoint(trim(Edit1.Text))) - 19, 09, 01);
+  qryReport.ParamByName('Years').Asstring := trim(Edit1.Text);
+  qryReport.open;
+
+
+
+      Sheet.writeStr(60,14,PAnsiChar(AnsiString(years)));
+      Sheet.writeNum(64,14,qryReport.FieldByName('Kol').Value);
+      Sheet.writeNum(64,17,qryReport.FieldByName('old6').Value);
+      Sheet.writeNum(64,20,qryReport.FieldByName('old7_9').Value);
+      Sheet.writeNum(64,24,qryReport.FieldByName('old10_14').Value);
+      Sheet.writeNum(64,28,qryReport.FieldByName('old15').Value);
+      Sheet.writeNum(64,32,qryReport.FieldByName('old16_18').Value);
+
+      Sheet.writeNum(65,14,qryReport.FieldByName('vseML').Value);
+      Sheet.writeNum(65,20,qryReport.FieldByName('old7_9ML').Value);
+      Sheet.writeNum(65,24,qryReport.FieldByName('old10_14ML').Value);
+      Sheet.writeNum(65,28,qryReport.FieldByName('old15ML').Value);
+      Sheet.writeNum(65,32,qryReport.FieldByName('old16_18ML').Value);
+
+      Sheet.writeNum(66,14,qryReport.FieldByName('vseOsn').Value);
+      Sheet.writeNum(66,24,qryReport.FieldByName('old10_14Osn').Value);
+      Sheet.writeNum(66,28,qryReport.FieldByName('old15Osn').Value);
+      Sheet.writeNum(66,32,qryReport.FieldByName('old16_18Osn').Value);
+
+      Sheet.writeNum(67,14,qryReport.FieldByName('vseNoML').Value);
+      Sheet.writeNum(67,17,qryReport.FieldByName('old6NoML').Value);
+      Sheet.writeNum(67,20,qryReport.FieldByName('old7_9NoML').Value);
+      Sheet.writeNum(67,24,qryReport.FieldByName('old10_14NoML').Value);
+      Sheet.writeNum(67,28,qryReport.FieldByName('old15NoML').Value);
+      Sheet.writeNum(67,32,qryReport.FieldByName('old16_18NoML').Value);
+
+      Sheet.writeNum(68,14,qryReport.FieldByName('vseNoOsn').Value);
+      Sheet.writeNum(68,17,qryReport.FieldByName('old6NoOsn').Value);
+      Sheet.writeNum(68,20,qryReport.FieldByName('old7_9NoOsn').Value);
+      Sheet.writeNum(68,24,qryReport.FieldByName('old10_14NoOsn').Value);
+      Sheet.writeNum(68,28,qryReport.FieldByName('old15NoOsn').Value);
+      Sheet.writeNum(68,32,qryReport.FieldByName('old16_18NoOsn').Value);
+
+      Sheet.writeNum(69,17,qryReport.FieldByName('old6G').Value);
+      Sheet.writeNum(69,20,qryReport.FieldByName('old7_9G').Value);
+      Sheet.writeNum(69,24,qryReport.FieldByName('old10_14G').Value);
+      Sheet.writeNum(69,28,qryReport.FieldByName('old15G').Value);
+      Sheet.writeNum(69,32,qryReport.FieldByName('old16_18G').Value);
+
+
+
+
+  pth := PAnsiChar(AnsiString(xAppPath+'Excel\отчеты\report1.xlsx'));
+ Book.save(pth);
+ ShellExecute(0, 'open', Pwchar(xAppPath+'Excel\отчеты\report1.xlsx') , nil, nil, SW_SHOW);
+ Book.Free;
+end;
+
+end.

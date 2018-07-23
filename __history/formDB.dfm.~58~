@@ -1,0 +1,692 @@
+object DBForm: TDBForm
+  Left = 0
+  Top = 0
+  Caption = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
+  ClientHeight = 490
+  ClientWidth = 603
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 306
+    Width = 603
+    Height = 8
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitTop = 305
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 603
+    Height = 27
+    ButtonHeight = 29
+    ButtonWidth = 25
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Action = actAddChild
+    end
+    object ToolButton7: TToolButton
+      Left = 25
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton7'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 33
+      Top = 0
+      Action = actEditChild
+    end
+    object ToolButton4: TToolButton
+      Left = 58
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton4'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton2: TToolButton
+      Left = 66
+      Top = 0
+      Action = actDeleteChild
+    end
+    object ToolButton14: TToolButton
+      Left = 91
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton14'
+      ImageIndex = 4
+      Style = tbsSeparator
+    end
+    object ToolButton13: TToolButton
+      Left = 99
+      Top = 0
+      Action = actRefresh
+    end
+    object ToolButton16: TToolButton
+      Left = 124
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton16'
+      ImageIndex = 5
+      Style = tbsSeparator
+    end
+    object ToolButton15: TToolButton
+      Left = 132
+      Top = 0
+      Caption = 'ToolButton15'
+      ImageIndex = 5
+      OnClick = ToolButton15Click
+    end
+    object ToolButton5: TToolButton
+      Left = 157
+      Top = 0
+      Width = 13
+      Caption = 'ToolButton5'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton6: TToolButton
+      Left = 170
+      Top = 0
+      Action = actRefresh
+      ImageIndex = 4
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 273
+    Width = 603
+    Height = 33
+    Align = alTop
+    Caption = 'Panel1'
+    TabOrder = 1
+    object ToolBar2: TToolBar
+      Left = 1
+      Top = 1
+      Width = 601
+      Height = 29
+      ButtonHeight = 33
+      ButtonWidth = 24
+      Caption = 'ToolBar2'
+      Images = DataModule1.ImageList1
+      TabOrder = 0
+      object ToolButton8: TToolButton
+        Left = 0
+        Top = 0
+        Action = actAddDescript
+        OnClick = ToolButton8Click
+      end
+      object ToolButton9: TToolButton
+        Left = 24
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton9'
+        ImageIndex = 1
+        Style = tbsSeparator
+      end
+      object ToolButton10: TToolButton
+        Left = 32
+        Top = 0
+        Action = actEditDescript
+      end
+      object ToolButton11: TToolButton
+        Left = 56
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton11'
+        ImageIndex = 2
+        Style = tbsSeparator
+      end
+      object ToolButton12: TToolButton
+        Left = 64
+        Top = 0
+        Action = actDeleteDescript
+      end
+    end
+  end
+  object masterGrid: TDBGrid
+    Left = 0
+    Top = 27
+    Width = 603
+    Height = 246
+    Align = alTop
+    DataSource = MasterSource
+    ReadOnly = True
+    TabOrder = 2
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'SURNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1060#1072#1084#1080#1083#1080#1103
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FIRSTNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1048#1084#1103
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LASTNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1054#1090#1095#1077#1089#1090#1074#1086
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BIRTHDAY'
+        Title.Alignment = taCenter
+        Title.Caption = #1044#1072#1090#1072' '#1088#1086#1078#1076#1077#1085#1080#1103
+        Width = 90
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CONT_SRNM'
+        Title.Alignment = taCenter
+        Title.Caption = #1060#1072#1084#1080#1083#1080#1103' '#1088#1086#1076#1080#1090#1077#1083#1103
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CONT_FRSTNM'
+        Title.Alignment = taCenter
+        Title.Caption = #1048#1084#1103' '#1088#1086#1076#1080#1090#1077#1083#1103
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CONT_LSTNM'
+        Title.Alignment = taCenter
+        Title.Caption = #1054#1090#1095#1077#1089#1090#1074#1086' '#1088#1086#1076#1080#1090#1077#1083#1103
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CONT_PHONE'
+        Title.Alignment = taCenter
+        Title.Caption = #1050#1086#1085#1090#1072#1082#1090
+        Width = 90
+        Visible = True
+      end>
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 314
+    Width = 603
+    Height = 193
+    ActivePage = TabSheet1
+    Align = alTop
+    TabOrder = 3
+    object TabSheet1: TTabSheet
+      Caption = #1054#1089#1074#1110#1090#1072
+      object DBGrid1: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 595
+        Height = 165
+        Align = alClient
+        DataSource = dsEDU
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'EDU_TYPE'
+            Title.Caption = #1050#1072#1090#1077#1075#1086#1088#1110#1103
+            Width = 166
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'SCHOOL_NAME'
+            Title.Caption = #1059#1095#1073#1086#1074#1080#1081' '#1079#1072#1082#1083#1072#1076
+            Width = 99
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DATE_FROM'
+            Title.Caption = #1055#1086#1095#1072#1090#1086#1082' '#1085#1072#1074#1095#1072#1085#1085#1103
+            Width = 114
+            Visible = True
+          end>
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = #1040#1076#1088#1077#1089#1072
+      ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+      object DBGrid2: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 595
+        Height = 165
+        Align = alClient
+        DataSource = dsREG
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'STREET'
+            Title.Alignment = taCenter
+            Title.Caption = #1042#1091#1083#1080#1094#1103
+            Width = 100
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NUM_HOUSE'
+            Title.Alignment = taCenter
+            Title.Caption = #1041#1091#1076#1080#1085#1086#1082
+            Width = 51
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'APARTMENT'
+            Title.Alignment = taCenter
+            Title.Caption = #1050#1074#1072#1088#1090#1080#1088#1072
+            Width = 56
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DATE_FROM'
+            Title.Alignment = taCenter
+            Title.Caption = #1055#1088#1086#1078#1080#1074#1072#1108' '#1079
+            Width = 76
+            Visible = True
+          end>
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = #1053#1077' '#1085#1072#1074#1095#1072#1074#1089#1103
+      ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
+    end
+  end
+  object trWrite: TFDTransaction
+    Options.Isolation = xiSnapshot
+    Options.AutoStop = False
+    Connection = DataModule1.FDConnection
+    Left = 272
+    Top = 144
+  end
+  object qryMaster: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'SELECT *   '
+      'FROM'
+      '   NEW_TABLE '
+      'ORDER BY SURNAME')
+    Left = 352
+    Top = 144
+  end
+  object MasterSource: TDataSource
+    DataSet = qryMaster
+    Left = 352
+    Top = 88
+  end
+  object qryEdu: TFDQuery
+    CachedUpdates = True
+    MasterSource = MasterSource
+    MasterFields = 'ID'
+    DetailFields = 'ID_CHILD'
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    UpdateTransaction = trWrite
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    UpdateObject = FDUpdateSQL2
+    SQL.Strings = (
+      'SELECT '
+      'EDUCATION.*,'
+      'SCHOOLS.SCHOOL_NAME,'
+      'TYPES_EDUCATION.EDU_TYPE'
+      'FROM'
+      'EDUCATION'
+      'LEFT OUTER JOIN SCHOOLS ON SCHOOLS.ID = EDUCATION.ID_SCHOOL'
+      
+        'LEFT OUTER JOIN TYPES_EDUCATION ON TYPES_EDUCATION.ID = EDUCATIO' +
+        'N.ID_TYPE_EDU'
+      'WHERE EDUCATION.ID_CHILD = :ID'
+      '')
+    Left = 544
+    Top = 352
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 19
+      end>
+  end
+  object dsEDU: TDataSource
+    DataSet = qryEdu
+    Left = 488
+    Top = 352
+  end
+  object qryREG: TFDQuery
+    CachedUpdates = True
+    MasterSource = MasterSource
+    MasterFields = 'ID'
+    DetailFields = 'ID_CHILD'
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    UpdateTransaction = trWrite
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    UpdateObject = FDUpdateSQL1
+    SQL.Strings = (
+      'SELECT ADDRESS.*, STREETS.STREET'
+      'FROM ADDRESS'
+      'LEFT OUTER JOIN STREETS ON STREETS.ID = ADDRESS.ID_STREET'
+      'WHERE ADDRESS.ID_CHILD = :ID')
+    Left = 544
+    Top = 400
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 19
+      end>
+  end
+  object dsREG: TDataSource
+    DataSet = qryREG
+    Left = 488
+    Top = 400
+  end
+  object ActionList1: TActionList
+    Images = DataModule1.ImageList1
+    Left = 40
+    Top = 432
+    object actAddChild: TAction
+      Caption = 'Add'
+      Hint = 'Add'
+      ImageIndex = 0
+      OnExecute = actAddChildExecute
+    end
+    object actEditChild: TAction
+      Caption = 'Edit'
+      Hint = 'Edit'
+      ImageIndex = 1
+      OnExecute = actEditChildExecute
+    end
+    object actDeleteChild: TAction
+      Caption = 'Delete'
+      Hint = 'Delete'
+      ImageIndex = 2
+      OnExecute = actDeleteChildExecute
+    end
+    object actRefresh: TAction
+      Caption = 'actRefresh'
+      ImageIndex = 3
+      OnExecute = actRefreshExecute
+    end
+    object actAddDescript: TAction
+      Caption = 'actAddDescript'
+      ImageIndex = 0
+      OnExecute = ShowRegForm
+    end
+    object actDeleteDescript: TAction
+      Caption = 'actDeleteDescript'
+      ImageIndex = 2
+      OnExecute = actDeleteDescriptExecute
+    end
+    object actEditDescript: TAction
+      Caption = 'actEditDescript'
+      ImageIndex = 1
+      OnExecute = actEditDescriptExecute
+    end
+    object actImportExcel: TAction
+      Caption = 'actImportExcel'
+      ImageIndex = 5
+    end
+  end
+  object qryAddChild: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'EXECUTE PROCEDURE sp_add_child('
+      '  NEXT VALUE FOR gen_new_table_id, '
+      '  :SURNAME, '
+      '  :FIRSTNAME,'
+      '  :LASTNAME,'
+      '  :BIRTHDAY,'
+      '  :GENDER'
+      ')')
+    ParamData = <
+      item
+        Name = 'SURNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = 'FIRSTNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+      end
+      item
+        Name = 'LASTNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+      end
+      item
+        Name = 'BIRTHDAY'
+        DataType = ftDate
+        ParamType = ptInput
+      end
+      item
+        Name = 'GENDER'
+        DataType = ftSmallint
+        ParamType = ptInput
+      end>
+    Left = 432
+    Top = 88
+  end
+  object qryEditChild: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'EXECUTE PROCEDURE sp_edit_child('
+      '  :ID, '
+      '  :SURNAME, '
+      '  :FIRSTNAME,'
+      '  :LASTNAME,'
+      '  :BIRTHDAY,'
+      '  :GENDER,'
+      '  :CONT_SURNAME,'
+      '  :CONT_FIRSTNAME,'
+      '  :CONT_LASTNAME,'
+      '  :CONT_PHONE'
+      ')')
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'SURNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = 'FIRSTNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = 'LASTNAME'
+        DataType = ftWideString
+        ParamType = ptInput
+        Size = 255
+        Value = Null
+      end
+      item
+        Name = 'BIRTHDAY'
+        DataType = ftDate
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'GENDER'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CONT_SURNAME'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CONT_FIRSTNAME'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CONT_LASTNAME'
+        ParamType = ptInput
+      end
+      item
+        Name = 'CONT_PHONE'
+        ParamType = ptInput
+      end>
+    Left = 432
+    Top = 144
+  end
+  object qryDeleteChild: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'EXECUTE PROCEDURE sp_delete_child(:ID)')
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    Left = 432
+    Top = 200
+  end
+  object FDUpdateSQL1: TFDUpdateSQL
+    Connection = DataModule1.FDConnection
+    InsertSQL.Strings = (
+      'INSERT INTO ADDRESS'
+      '(ID, ID_CHILD, NUM_HOUSE, APARTMENT, DATE_FROM, '
+      '  ID_STREET)'
+      
+        'VALUES (:NEW_ID, :NEW_ID_CHILD, :NEW_NUM_HOUSE, :NEW_APARTMENT, ' +
+        ':NEW_DATE_FROM, '
+      '  :NEW_ID_STREET)'
+      
+        'RETURNING ID, ID_CHILD, NUM_HOUSE, APARTMENT, DATE_FROM, ID_STRE' +
+        'ET')
+    ModifySQL.Strings = (
+      'UPDATE ADDRESS'
+      
+        'SET ID = :NEW_ID, ID_CHILD = :NEW_ID_CHILD, NUM_HOUSE = :NEW_NUM' +
+        '_HOUSE, '
+      '  APARTMENT = :NEW_APARTMENT, DATE_FROM = :NEW_DATE_FROM, '
+      '  ID_STREET = :NEW_ID_STREET'
+      'WHERE ID = :OLD_ID'
+      
+        'RETURNING ID, ID_CHILD, NUM_HOUSE, APARTMENT, DATE_FROM, ID_STRE' +
+        'ET')
+    DeleteSQL.Strings = (
+      'DELETE FROM ADDRESS'
+      'WHERE ID = :OLD_ID')
+    FetchRowSQL.Strings = (
+      'SELECT ID, ID_CHILD, NUM_HOUSE, APARTMENT, DATE_FROM, ID_STREET'
+      'FROM ADDRESS'
+      'WHERE ID = :ID')
+    Left = 424
+    Top = 400
+  end
+  object FDUpdateSQL2: TFDUpdateSQL
+    Connection = DataModule1.FDConnection
+    InsertSQL.Strings = (
+      'INSERT INTO EDUCATION'
+      '(ID, ID_CHILD, ID_TYPE_EDU, DATE_FROM, ID_SCHOOL)'
+      
+        'VALUES (:NEW_ID, :NEW_ID_CHILD, :NEW_ID_TYPE_EDU, :NEW_DATE_FROM' +
+        ', :NEW_ID_SCHOOL)'
+      'RETURNING ID, ID_CHILD, ID_TYPE_EDU, DATE_FROM, ID_SCHOOL')
+    ModifySQL.Strings = (
+      'UPDATE EDUCATION'
+      
+        'SET ID = :NEW_ID, ID_CHILD = :NEW_ID_CHILD, ID_TYPE_EDU = :NEW_I' +
+        'D_TYPE_EDU, '
+      '  DATE_FROM = :NEW_DATE_FROM, ID_SCHOOL = :NEW_ID_SCHOOL'
+      'WHERE ID = :OLD_ID'
+      'RETURNING ID, ID_CHILD, ID_TYPE_EDU, DATE_FROM, ID_SCHOOL')
+    DeleteSQL.Strings = (
+      'DELETE FROM EDUCATION'
+      'WHERE ID = :OLD_ID')
+    FetchRowSQL.Strings = (
+      'SELECT ID, ID_CHILD, ID_TYPE_EDU, DATE_FROM, ID_SCHOOL'
+      'FROM EDUCATION'
+      'WHERE ID = :ID')
+    Left = 296
+    Top = 424
+  end
+  object _opg_: TOpenDialog
+    Left = 504
+    Top = 96
+  end
+end

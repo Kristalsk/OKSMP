@@ -1,0 +1,150 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  Caption = 'Osvita DB'
+  ClientHeight = 494
+  ClientWidth = 646
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 646
+    Height = 494
+    Align = alClient
+    Ctl3D = True
+    DataSource = DataSource1
+    ParentCtl3D = False
+    ReadOnly = True
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    OnTitleClick = DBGrid1TitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'SURNAME'
+        Title.Caption = #1055#1088#1110#1079#1074#1080#1097#1077
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FIRSTNAME'
+        Title.Caption = #1030#1084#39#1103
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LASTNAME'
+        Title.Caption = #1055#1086' '#1073#1072#1090#1100#1082#1086#1074#1110
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'DATA_BIRTH'
+        Title.Caption = #1044#1072#1090#1072' '#1085#1072#1088#1086#1076#1078#1077#1085#1085#1103
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'STREET'
+        Title.Caption = #1042#1091#1083#1080#1094#1103
+        Width = 78
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NUM_HOUSE'
+        Title.Caption = #8470' '#1073#1091#1076#1080#1085#1082#1091
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SCHOOL_NAME'
+        Title.Caption = #1064#1082#1086#1083#1072
+        Width = 136
+        Visible = True
+      end>
+  end
+  object FDUpdateDB: TFDUpdateSQL
+    Left = 1096
+    Top = 200
+  end
+  object MainMenu1: TMainMenu
+    Left = 200
+    Top = 352
+    object N1: TMenuItem
+      Caption = #1047#1072#1087#1080#1089#1100
+      object N3: TMenuItem
+        Caption = #1044#1086#1073#1072#1074#1080#1090#1100
+        OnClick = N3Click
+      end
+      object N4: TMenuItem
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+        OnClick = N4Click
+      end
+      object N5: TMenuItem
+        Caption = #1059#1076#1072#1083#1080#1090#1100
+        OnClick = N5Click
+      end
+    end
+    object N2: TMenuItem
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      object N6: TMenuItem
+        Caption = #1055#1091#1090#1100' '#1082' '#1041#1044
+        OnClick = N6Click
+      end
+    end
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'DriverID=ODBC'
+      'DataSource=oksmp')
+    Connected = True
+    LoginPrompt = False
+    Left = 408
+    Top = 248
+  end
+  object DataSource1: TDataSource
+    DataSet = FDQuery1
+    Left = 272
+    Top = 248
+  end
+  object FDQuery1: TFDQuery
+    Active = True
+    FieldOptions.UpdatePersistent = True
+    Connection = FDConnection1
+    UpdateOptions.AssignedValues = [uvUpdateMode, uvCountUpdatedRecords]
+    UpdateOptions.CountUpdatedRecords = False
+    UpdateOptions.UpdateTableName = 'NEW_TABLE'
+    UpdateOptions.KeyFields = 'ID;SCHOOL_ID;STREET_ID'
+    SQL.Strings = (
+      'SELECT NEW_TABLE.ID, SURNAME, FIRSTNAME,LASTNAME,'
+      'DATA_BIRTH,'
+      'STREET_ID,'
+      'STREETS.STREET,'
+      'NUM_HOUSE,'
+      'SCHOOL_ID,'
+      'SCHOOLS.SCHOOL_NAME from'
+      'NEW_TABLE, STREETS,SCHOOLS'
+      'WHERE STREETS.ID = NEW_TABLE.STREET_ID '
+      'AND'
+      'SCHOOLS.ID = NEW_TABLE.SCHOOL_ID')
+    Left = 344
+    Top = 248
+  end
+end

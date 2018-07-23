@@ -1,0 +1,245 @@
+object ReportF: TReportF
+  Left = 0
+  Top = 0
+  Caption = #1047#1074#1110#1090
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbNavchRik: TLabel
+    Left = 8
+    Top = 44
+    Width = 166
+    Height = 19
+    Caption = #1047#1074#1110#1090' '#1079#1072' '#1085#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1088#1110#1082
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 35
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 6
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 4
+    end
+  end
+  object Edit1: TEdit
+    Left = 180
+    Top = 41
+    Width = 57
+    Height = 27
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+  end
+  object qryCombo: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'select distinct years, years as yea from education')
+    Left = 568
+    Top = 240
+  end
+  object DataSource1: TDataSource
+    DataSet = qryCombo
+    Left = 512
+    Top = 240
+  end
+  object qryReport: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'select '
+      
+        '    Sum( Case When  (zakl is null)   then 1 else 0 end ) as Kol,' +
+        ' '
+      
+        '    Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN' +
+        ' :End_6 and :End_d) then 1 else 0 end ) as old6, '
+      
+        '    Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN' +
+        ' :End_7_9 and :End_6) then 1 else 0 end ) as old7_9, '
+      
+        '    Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN' +
+        ' :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14, '
+      
+        '    Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN' +
+        ' :End_15 and :End_10_14) then 1 else 0 end ) as old15, '
+      
+        '    Sum( Case When  ed.id_child is null and (ch.birthday BETWEEN' +
+        ' :End_16_18 and :End_15) then 1 else 0 end ) as old16_18,'
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '4 and te.id=0   then 1 else 0 end ) as vseML, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '4 and te.id=0  and (ch.birthday BETWEEN :End_7_9 and :End_6) the' +
+        'n 1 else 0 end ) as old7_9ML, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '4 and te.id=0  and (ch.birthday BETWEEN :End_10_14 and :End_7_9)' +
+        ' then 1 else 0 end ) as old10_14ML, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '4 and te.id=0  and (ch.birthday BETWEEN :End_15 and :End_10_14) ' +
+        'then 1 else 0 end ) as old15ML, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '4 and te.id=0  and (ch.birthday BETWEEN :End_16_18 and :End_15) ' +
+        'then 1 else 0 end ) as old16_18ML, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '9 and te.id=0  then 1 else 0 end ) as vseOsn, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '9 and te.id=0  and (ch.birthday BETWEEN :End_10_14 and :End_7_9)' +
+        ' then 1 else 0 end ) as old10_14Osn, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '9 and te.id=0  and (ch.birthday BETWEEN :End_15 and :End_10_14) ' +
+        'then 1 else 0 end ) as old15Osn, '
+      
+        '    Sum( Case When  (Select max(ed.classnum) from education ed)=' +
+        '9 and te.id=0  and (ch.birthday BETWEEN :End_16_18 and :End_15) ' +
+        'then 1 else 0 end ) as old16_18Osn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'then 1 else 0 end ) as vseNoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) ' +
+        'as old6NoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ' +
+        ') as old7_9NoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 ' +
+        'end ) as old10_14NoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 e' +
+        'nd ) as old15NoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 1 and 3) ' +
+        'and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 e' +
+        'nd ) as old16_18NoML, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'then 1 else 0 end ) as vseNoOsn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'and (ch.birthday BETWEEN :End_6 and :End_d) then 1 else 0 end ) ' +
+        'as old6NoOsn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'and (ch.birthday BETWEEN :End_7_9 and :End_6) then 1 else 0 end ' +
+        ') as old7_9NoOsn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'and (ch.birthday BETWEEN :End_10_14 and :End_7_9) then 1 else 0 ' +
+        'end ) as old10_14NoOsn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'and (ch.birthday BETWEEN :End_15 and :End_10_14) then 1 else 0 e' +
+        'nd ) as old15NoOsn, '
+      
+        '    Sum( Case When   te.id=0 and  (ed.classnum BETWEEN 5 and 8) ' +
+        'and (ch.birthday BETWEEN :End_16_18 and :End_15) then 1 else 0 e' +
+        'nd ) as old16_18NoOsn, '
+      
+        '    Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BE' +
+        'TWEEN :End_6 and :End_d) then 1 else 0 end ) as old6G, '
+      
+        '    Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BE' +
+        'TWEEN :End_7_9 and :End_6) then 1 else 0 end ) as old7_9G, '
+      
+        '    Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BE' +
+        'TWEEN :End_10_14 and :End_7_9) then 1 else 0 end ) as old10_14G,'
+      
+        '    Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BE' +
+        'TWEEN :End_15 and :End_10_14) then 1 else 0 end ) as old15G,'
+      
+        '    Sum( Case When   te.id=0 and ch.gender=0 and (ch.birthday BE' +
+        'TWEEN :End_16_18 and :End_15) then 1 else 0 end ) as old16_18G  '
+      '    from children ch '
+      
+        '    Left outer join (select id_child, max(classnum) as mclass, m' +
+        'ax(id_zaklad) as mzakl, id_special as spID from education edsum)' +
+        ' on edsum.id_child = ch.id'
+      '    Left outer join Schools sc on sc.id= zakl '
+      '    Left outer join types_education te on te.id= sc.id_type'
+      '    Left outer join special sp on sp.id = spid '
+      '    where ch.birthday between :end_d and :end_16_18  ')
+    Left = 408
+    Top = 96
+    ParamData = <
+      item
+        Name = 'END_6'
+        ParamType = ptInput
+        Value = Null
+      end
+      item
+        Name = 'END_D'
+        DataType = ftWideString
+        ParamType = ptInput
+        Value = '01.09.2013'
+      end
+      item
+        Name = 'END_7_9'
+        ParamType = ptInput
+      end
+      item
+        Name = 'END_10_14'
+        ParamType = ptInput
+      end
+      item
+        Name = 'END_15'
+        ParamType = ptInput
+      end
+      item
+        Name = 'END_16_18'
+        ParamType = ptInput
+      end>
+  end
+end

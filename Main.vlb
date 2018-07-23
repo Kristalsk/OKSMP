@@ -1,0 +1,10 @@
+﻿[MainMenu1]
+Coordinates=183,78,81,36
+
+[]
+Coordinates=310,56,90,36
+Visible=True
+
+[mnSettings]
+Coordinates=85,173,40,36
+

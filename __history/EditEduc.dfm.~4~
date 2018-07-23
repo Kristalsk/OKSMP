@@ -1,0 +1,102 @@
+object EditEdu: TEditEdu
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'EditEdu'
+  ClientHeight = 259
+  ClientWidth = 189
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbZaklad: TLabel
+    Left = 24
+    Top = 21
+    Width = 37
+    Height = 13
+    Caption = #1047#1072#1082#1083#1072#1076
+  end
+  object lbSpecial: TLabel
+    Left = 24
+    Top = 80
+    Width = 81
+    Height = 13
+    Caption = #1054#1089#1086#1073#1083#1080#1074#1110'  '#1091#1084#1086#1074#1080
+  end
+  object lbYear: TLabel
+    Left = 24
+    Top = 147
+    Width = 14
+    Height = 13
+    Caption = #1056#1110#1082
+  end
+  object edYear: TEdit
+    Left = 24
+    Top = 168
+    Width = 145
+    Height = 21
+    TabOrder = 0
+  end
+  object BitBtn1: TBitBtn
+    Left = 24
+    Top = 208
+    Width = 145
+    Height = 25
+    Kind = bkOK
+    NumGlyphs = 2
+    TabOrder = 1
+  end
+  object DBLookupComboBox2: TDBLookupComboBox
+    Left = 24
+    Top = 40
+    Width = 145
+    Height = 21
+    KeyField = 'ID'
+    ListField = 'ZAKLAD'
+    ListSource = DataSource2
+    TabOrder = 2
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 24
+    Top = 120
+    Width = 145
+    Height = 21
+    KeyField = 'ID'
+    ListField = 'INFO'
+    ListSource = DataSource1
+    TabOrder = 3
+  end
+  object FDQuery1: TFDQuery
+    Active = True
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'SELECT * FROM SPECIAL')
+    Left = 256
+    Top = 128
+  end
+  object FDQuery2: TFDQuery
+    Active = True
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'SELECT * FROM SCHOOLS')
+    Left = 320
+    Top = 128
+  end
+  object DataSource1: TDataSource
+    DataSet = FDQuery1
+    Left = 256
+    Top = 192
+  end
+  object DataSource2: TDataSource
+    DataSet = FDQuery2
+    Left = 320
+    Top = 192
+  end
+end

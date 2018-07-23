@@ -1,0 +1,567 @@
+object DBForm: TDBForm
+  Left = 0
+  Top = 0
+  Caption = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
+  ClientHeight = 584
+  ClientWidth = 685
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 281
+    Width = 685
+    Height = 8
+    Cursor = crVSplit
+    Align = alTop
+    ExplicitLeft = 1
+    ExplicitTop = 273
+    ExplicitWidth = 581
+  end
+  object Splitter2: TSplitter
+    Left = 210
+    Top = 289
+    Width = 6
+    Height = 295
+    ExplicitLeft = 369
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 685
+    Height = 35
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    ExplicitWidth = 783
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Action = actAddChild
+    end
+    object ToolButton7: TToolButton
+      Left = 33
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton7'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 41
+      Top = 0
+      Action = actEditChild
+    end
+    object ToolButton4: TToolButton
+      Left = 74
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton4'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton2: TToolButton
+      Left = 82
+      Top = 0
+      Action = actDeleteChild
+    end
+    object ToolButton14: TToolButton
+      Left = 115
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton14'
+      ImageIndex = 4
+      Style = tbsSeparator
+    end
+    object ToolButton13: TToolButton
+      Left = 123
+      Top = 0
+      Action = actRefresh
+    end
+    object ToolButton15: TToolButton
+      Left = 156
+      Top = 0
+      Caption = 'ToolButton15'
+      ImageIndex = 5
+      OnClick = ToolButton15Click
+    end
+    object ToolButton16: TToolButton
+      Left = 189
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton16'
+      ImageIndex = 5
+      Style = tbsSeparator
+    end
+    object ToolButton5: TToolButton
+      Left = 197
+      Top = 0
+      Width = 13
+      Caption = 'ToolButton5'
+      ImageIndex = 3
+      Style = tbsSeparator
+    end
+    object ToolButton6: TToolButton
+      Left = 210
+      Top = 0
+      Action = actRefresh
+      ImageIndex = 4
+    end
+  end
+  object masterGrid: TDBGrid
+    Left = 0
+    Top = 35
+    Width = 685
+    Height = 246
+    Align = alTop
+    DataSource = MasterSource
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -16
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'SURNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1055#1088#1110#1079#1074#1080#1097#1077
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -16
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FIRSTNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1030#1084#39#1103
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -16
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LASTNAME'
+        Title.Alignment = taCenter
+        Title.Caption = #1055#1086' '#1073#1072#1090#1100#1082#1086#1074#1110
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -16
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'BIRTHDAY'
+        Title.Alignment = taCenter
+        Title.Caption = #1044#1072#1090#1072' '#1085#1072#1088#1086#1076#1078#1077#1085#1085#1103
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -16
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 130
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INFO'
+        Title.Alignment = taCenter
+        Title.Caption = #1055#1088#1080#1084#1110#1090#1082#1080
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -16
+        Title.Font.Name = 'Tahoma'
+        Title.Font.Style = []
+        Width = 200
+        Visible = True
+      end>
+  end
+  object ToolBar2: TToolBar
+    Left = 0
+    Top = 289
+    Width = 33
+    Height = 295
+    Align = alLeft
+    AutoSize = True
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar2'
+    Images = DataModule1.ImageList1
+    TabOrder = 2
+    ExplicitHeight = 305
+    object ToolButton8: TToolButton
+      Left = 0
+      Top = 0
+      Action = actAddAddress
+      Wrap = True
+      OnClick = ToolButton8Click
+    end
+    object ToolButton9: TToolButton
+      Left = 0
+      Top = 33
+      Action = actEditAddress
+      Wrap = True
+      OnClick = ToolButton9Click
+    end
+    object ToolButton10: TToolButton
+      Left = 0
+      Top = 66
+      Action = actDeleteAddress
+      Wrap = True
+      OnClick = ToolButton10Click
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 33
+    Top = 289
+    Width = 177
+    Height = 295
+    Align = alLeft
+    DataSource = dsREG
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 3
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -16
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ADDRESS'
+        Title.Alignment = taCenter
+        Title.Caption = #1040#1076#1088#1077#1089#1072
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'YEARS'
+        Title.Alignment = taCenter
+        Title.Caption = #1056#1110#1082
+        Visible = True
+      end>
+  end
+  object ToolBar3: TToolBar
+    Left = 216
+    Top = 289
+    Width = 33
+    Height = 295
+    Align = alLeft
+    AutoSize = True
+    ButtonHeight = 33
+    ButtonWidth = 33
+    Caption = 'ToolBar3'
+    Ctl3D = False
+    Images = DataModule1.ImageList1
+    TabOrder = 4
+    ExplicitLeft = 377
+    ExplicitHeight = 305
+    object ToolButton11: TToolButton
+      Left = 0
+      Top = 0
+      Action = actAddEdu
+      Wrap = True
+    end
+    object ToolButton12: TToolButton
+      Left = 0
+      Top = 33
+      Action = actEditEdu
+      Wrap = True
+    end
+    object ToolButton17: TToolButton
+      Left = 0
+      Top = 66
+      Action = actDeleteEdu
+    end
+  end
+  object DBGrid2: TDBGrid
+    Left = 249
+    Top = 289
+    Width = 436
+    Height = 295
+    Align = alClient
+    DataSource = dsEDU
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 5
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -16
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ZAKLAD'
+        Title.Alignment = taCenter
+        Title.Caption = #1053#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1079#1072#1082#1083#1072#1076
+        Width = 200
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CLASSNUM'
+        Title.Alignment = taCenter
+        Title.Caption = #1050#1083#1072#1089
+        Width = 60
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'YEARS'
+        Title.Alignment = taCenter
+        Title.Caption = #1053#1072#1074#1095#1072#1083#1100#1085#1080#1081' '#1088#1110#1082
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'INFO'
+        Title.Alignment = taCenter
+        Title.Caption = #1057#1087#1077#1094'. '#1091#1084#1086#1074#1080
+        Width = 100
+        Visible = True
+      end>
+  end
+  object trWrite: TFDTransaction
+    Options.Isolation = xiSnapshot
+    Options.AutoStop = False
+    Connection = DataModule1.FDConnection
+    Left = 408
+    Top = 152
+  end
+  object qryMaster: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    SQL.Strings = (
+      'SELECT *   '
+      'FROM'
+      '   CHILDREN '
+      'ORDER BY SURNAME')
+    Left = 472
+    Top = 152
+  end
+  object MasterSource: TDataSource
+    DataSet = qryMaster
+    Left = 472
+    Top = 96
+  end
+  object qryEdu: TFDQuery
+    CachedUpdates = True
+    MasterSource = MasterSource
+    MasterFields = 'ID'
+    DetailFields = 'ID_CHILD'
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    SQL.Strings = (
+      'SELECT education.*, schools.zaklad, '
+      'special.info'
+      'FROM EDUCATION'
+      'left join schools on education.id_zaklad = schools.id'
+      'left join special on special.id = education.id_special'
+      'WHERE EDUCATION.ID_CHILD = :ID'
+      '')
+    Left = 544
+    Top = 352
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 1
+      end>
+  end
+  object dsEDU: TDataSource
+    DataSet = qryEdu
+    Left = 488
+    Top = 352
+  end
+  object qryREG: TFDQuery
+    CachedUpdates = True
+    MasterSource = MasterSource
+    MasterFields = 'ID'
+    DetailFields = 'ID_CHILD'
+    Connection = DataModule1.FDConnection
+    Transaction = DataModule1.TrRead
+    FetchOptions.AssignedValues = [evCache]
+    FetchOptions.Cache = [fiBlobs, fiMeta]
+    SQL.Strings = (
+      'SELECT * '
+      'FROM ADDRESS'
+      'WHERE ADDRESS.ID_CHILD = :ID')
+    Left = 544
+    Top = 400
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = 1
+      end>
+  end
+  object dsREG: TDataSource
+    DataSet = qryREG
+    Left = 488
+    Top = 400
+  end
+  object ActionList1: TActionList
+    Images = DataModule1.ImageList1
+    Left = 120
+    Top = 432
+    object actAddChild: TAction
+      Caption = 'Add'
+      Hint = 'Add'
+      ImageIndex = 0
+      OnExecute = actAddChildExecute
+    end
+    object actEditChild: TAction
+      Caption = 'Edit'
+      Hint = 'Edit'
+      ImageIndex = 1
+      OnExecute = actEditChildExecute
+    end
+    object actDeleteChild: TAction
+      Caption = 'Delete'
+      Hint = 'Delete'
+      ImageIndex = 2
+      OnExecute = actDeleteChildExecute
+    end
+    object actRefresh: TAction
+      Caption = 'actRefresh'
+      ImageIndex = 3
+      OnExecute = actRefreshExecute
+    end
+    object actAddEdu: TAction
+      Caption = 'actAddEdu'
+      ImageIndex = 0
+      OnExecute = ShowAddEduForm
+    end
+    object actDeleteEdu: TAction
+      Caption = 'actDeleteEdu'
+      ImageIndex = 2
+      OnExecute = DeleteEdu
+    end
+    object actEditEdu: TAction
+      Caption = 'actEditEdu'
+      ImageIndex = 1
+      OnExecute = ShowEditEduForm
+    end
+    object actImportExcel: TAction
+      Caption = 'actImportExcel'
+      ImageIndex = 5
+    end
+    object actAddAddress: TAction
+      Caption = 'actAddAddress'
+      ImageIndex = 0
+      OnExecute = ShowRegForm
+    end
+    object actEditAddress: TAction
+      Caption = 'actEditAddress'
+      ImageIndex = 1
+      OnExecute = ShowEditRegForm
+    end
+    object actDeleteAddress: TAction
+      Caption = 'actDeleteAddress'
+      ImageIndex = 2
+      OnExecute = DeleteAddress
+    end
+  end
+  object _opg_: TOpenDialog
+    Filter = #1060#1072#1081#1083#1099' XLSX|*.XLSX'
+    Left = 528
+    Top = 96
+  end
+  object ExcImp: TFDQuery
+    Connection = DataModule1.FDConnection
+    Transaction = trImport
+    Left = 528
+    Top = 152
+  end
+  object trImport: TFDTransaction
+    Options.Isolation = xiSnapshot
+    Options.AutoStop = False
+    Connection = DataModule1.FDConnection
+    Left = 584
+    Top = 104
+  end
+  object cmdDelEdu: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'execute procedure sp_del_edu (:id )')
+    ParamData = <
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end>
+    Left = 568
+    Top = 536
+  end
+  object cmdDelAddress: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'execute procedure sp_del_address (:id )')
+    ParamData = <
+      item
+        Name = 'ID'
+        ParamType = ptInput
+      end>
+    Left = 624
+    Top = 536
+  end
+  object cmdDelChild: TFDCommand
+    Connection = DataModule1.FDConnection
+    Transaction = trWrite
+    CommandText.Strings = (
+      'execute procedure sp_del_child (:id_old)')
+    ParamData = <
+      item
+        Name = 'ID_OLD'
+        ParamType = ptInput
+      end>
+    Left = 512
+    Top = 536
+  end
+end

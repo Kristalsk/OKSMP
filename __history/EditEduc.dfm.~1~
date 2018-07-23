@@ -1,0 +1,86 @@
+object EditEdu: TEditEdu
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'EditEdu'
+  ClientHeight = 293
+  ClientWidth = 200
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object lbTypeEdu: TLabel
+    Left = 24
+    Top = 8
+    Width = 69
+    Height = 13
+    Caption = #1058#1080#1087' '#1085#1072#1074#1095#1072#1085#1085#1103
+  end
+  object lbZaklad: TLabel
+    Left = 24
+    Top = 61
+    Width = 37
+    Height = 13
+    Caption = #1047#1072#1082#1083#1072#1076
+  end
+  object lbSpecial: TLabel
+    Left = 24
+    Top = 120
+    Width = 81
+    Height = 13
+    Caption = #1054#1089#1086#1073#1083#1080#1074#1110'  '#1091#1084#1086#1074#1080
+  end
+  object lbYear: TLabel
+    Left = 24
+    Top = 187
+    Width = 14
+    Height = 13
+    Caption = #1056#1110#1082
+  end
+  object cmbTypeEdu: TComboBox
+    Left = 24
+    Top = 27
+    Width = 145
+    Height = 21
+    TabOrder = 0
+    Text = 'cmbTypeEdu'
+  end
+  object cmbZaklad: TComboBox
+    Left = 24
+    Top = 80
+    Width = 145
+    Height = 21
+    TabOrder = 1
+    Text = 'cmbZaklad'
+  end
+  object edYear: TEdit
+    Left = 24
+    Top = 208
+    Width = 145
+    Height = 21
+    TabOrder = 2
+    Text = 'edYear'
+  end
+  object cmbSpecial: TComboBox
+    Left = 24
+    Top = 147
+    Width = 145
+    Height = 21
+    TabOrder = 3
+    Text = 'cmbSpecial'
+  end
+  object BitBtn1: TBitBtn
+    Left = 24
+    Top = 256
+    Width = 145
+    Height = 25
+    Kind = bkOK
+    NumGlyphs = 2
+    TabOrder = 4
+  end
+end

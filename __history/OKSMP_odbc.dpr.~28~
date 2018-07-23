@@ -1,0 +1,28 @@
+program OKSMP_odbc;
+
+uses
+  Vcl.Forms,
+  Main in 'Main.pas' {MainForm},
+  Add in 'Add.pas' {AddForm},
+  DModule in 'DModule.pas' {DataModule1: TDataModule},
+  formDB in 'formDB.pas' {DBForm},
+  EditReg in 'EditReg.pas' {EditAddress},
+  EditEduc in 'EditEduc.pas' {EditEdu},
+  LoginF in 'LoginF.pas' {LoginForm},
+  AddSpecForm in 'AddSpecForm.pas' {AddSpecialForm},
+  reportForm in 'reportForm.pas' {ReportF},
+  AddZaklad in 'AddZaklad.pas' {AddSchoolForm},
+  editZakl in 'editZakl.pas' {editZaklForm},
+  AddTypeZakl in 'AddTypeZakl.pas' {AddTypeZaklad},
+  Rekvizits in 'Rekvizits.pas' {AddRekvizitForm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDataModule1, DataModule1);
+  Application.CreateForm(TLoginForm, LoginForm);
+  Application.CreateForm(TMainForm, MainForm);
+  Application.Run;
+end.

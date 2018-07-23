@@ -1,0 +1,331 @@
+object ViewReportForm: TViewReportForm
+  Left = 0
+  Top = 0
+  Caption = 'ViewReportForm'
+  ClientHeight = 411
+  ClientWidth = 538
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object frxPreview1: TfrxPreview
+    Left = 0
+    Top = 0
+    Width = 538
+    Height = 411
+    Align = alClient
+    OutlineVisible = False
+    OutlineWidth = 120
+    ThumbnailVisible = False
+    UseReportHints = True
+  end
+  object frxReport1: TfrxReport
+    Version = '5.3.14'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    Preview = frxPreview1
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 43252.550611342590000000
+    ReportOptions.LastChange = 43252.583229664350000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      ''
+      'begin'
+      ''
+      'end.')
+    Left = 384
+    Top = 232
+    Datasets = <
+      item
+        DataSet = frxDBDataset1
+        DataSetName = 'frxDBDataset1'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo7: TfrxMemoView
+          Left = 234.330860000000000000
+          Width = 60.472480000000000000
+          Height = 22.677180000000000000
+          Memo.UTF8W = (
+            #1054#1090#1095#1077#1090' '#1086#1090' ')
+        end
+        object SysMemo1: TfrxSysMemoView
+          Left = 294.803340000000000000
+          Width = 75.590599999999990000
+          Height = 18.897650000000000000
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[DATE]')
+        end
+        object SysMemo2: TfrxSysMemoView
+          Left = 370.393940000000000000
+          Width = 71.811070000000000000
+          Height = 18.897650000000000000
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[TIME]')
+        end
+      end
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        Height = 18.897650000000000000
+        Top = 147.401670000000000000
+        Width = 718.110700000000000000
+        DataSet = frxDBDataset1
+        DataSetName = 'frxDBDataset1'
+        RowCount = 0
+        object frxDBDataset1SURNAME: TfrxMemoView
+          Width = 170.078850000000000000
+          Height = 18.897650000000000000
+          DataField = 'SURNAME'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8W = (
+            '[frxDBDataset1."SURNAME"]')
+          ParentFont = False
+        end
+        object frxDBDataset1FIRSTNAME: TfrxMemoView
+          Left = 170.078850000000000000
+          Width = 154.960730000000000000
+          Height = 18.897650000000000000
+          DataField = 'FIRSTNAME'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8W = (
+            '[frxDBDataset1."FIRSTNAME"]')
+          ParentFont = False
+        end
+        object frxDBDataset1LASTNAME: TfrxMemoView
+          Left = 325.039580000000000000
+          Width = 151.181200000000000000
+          Height = 18.897650000000000000
+          DataField = 'LASTNAME'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          Memo.UTF8W = (
+            '[frxDBDataset1."LASTNAME"]')
+          ParentFont = False
+        end
+        object frxDBDataset1DATA_BIRTH: TfrxMemoView
+          Left = 476.220780000000000000
+          Width = 132.283550000000000000
+          Height = 18.897650000000000000
+          DataField = 'DATA_BIRTH'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[frxDBDataset1."DATA_BIRTH"]')
+          ParentFont = False
+        end
+        object frxDBDataset1SCHOOL_NAME: TfrxMemoView
+          Left = 608.504330000000000000
+          Width = 109.606370000000000000
+          Height = 18.897650000000000000
+          DataField = 'SCHOOL_NAME'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[frxDBDataset1."SCHOOL_NAME"]')
+          ParentFont = False
+        end
+      end
+      object PageFooter1: TfrxPageFooter
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 226.771800000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          Left = 642.520100000000000000
+          Width = 75.590599999999990000
+          Height = 18.897650000000000000
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Page#]')
+        end
+      end
+      object Header1: TfrxHeader
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 102.047310000000000000
+        Width = 718.110700000000000000
+        object Memo2: TfrxMemoView
+          Width = 170.078850000000000000
+          Height = 22.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            #1060#1072#1084#1080#1083#1080#1103)
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          Left = 170.078850000000000000
+          Width = 154.960730000000000000
+          Height = 22.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            #1048#1084#1103)
+          ParentFont = False
+        end
+        object Memo4: TfrxMemoView
+          Left = 325.039580000000000000
+          Width = 151.181200000000000000
+          Height = 22.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            #1054#1090#1095#1077#1089#1090#1074#1086)
+          ParentFont = False
+        end
+        object Memo5: TfrxMemoView
+          Left = 476.220780000000000000
+          Width = 132.283550000000000000
+          Height = 22.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            #1044#1072#1090#1072' '#1088#1086#1078#1076#1077#1085#1080#1103)
+          ParentFont = False
+        end
+        object Memo6: TfrxMemoView
+          Left = 608.504330000000000000
+          Width = 109.606370000000000000
+          Height = 22.677180000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = [ftLeft, ftRight, ftTop, ftBottom]
+          HAlign = haCenter
+          Memo.UTF8W = (
+            #1064#1082#1086#1083#1072)
+          ParentFont = False
+        end
+      end
+    end
+  end
+  object frxDBDataset1: TfrxDBDataset
+    UserName = 'frxDBDataset1'
+    CloseDataSource = False
+    DataSource = MainForm.DataSource1
+    BCDToCurrency = False
+    Left = 264
+    Top = 232
+  end
+  object frxPDFExport1: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Transparency = False
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    Left = 288
+    Top = 160
+  end
+  object frxRTFExport1: TfrxRTFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    PictureType = gpPNG
+    Wysiwyg = True
+    Creator = 'FastReport'
+    SuppressPageHeadersFooters = False
+    HeaderFooterMode = hfText
+    AutoSize = False
+    Left = 368
+    Top = 152
+  end
+end

@@ -1,0 +1,80 @@
+object AddTypeZaklad: TAddTypeZaklad
+  Left = 0
+  Top = 0
+  Caption = #1058#1080#1087#1080' '#1079#1072#1082#1083#1072#1076#1110#1074
+  ClientHeight = 299
+  ClientWidth = 635
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 635
+    Height = 33
+    ButtonHeight = 33
+    ButtonWidth = 31
+    Caption = 'ToolBar1'
+    Images = DataModule1.ImageList1
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Caption = 'ToolButton1'
+      ImageIndex = 0
+    end
+    object ToolButton2: TToolButton
+      Left = 31
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 1
+      Style = tbsSeparator
+    end
+    object ToolButton3: TToolButton
+      Left = 39
+      Top = 0
+      Caption = 'ToolButton3'
+      ImageIndex = 4
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 33
+    Width = 635
+    Height = 266
+    Align = alClient
+    DataSource = DataSource1
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object qryTypeZakl: TFDQuery
+    Active = True
+    Connection = DataModule1.FDConnection
+    Transaction = trTypeZakl
+    SQL.Strings = (
+      'select * from types_education')
+    Left = 488
+    Top = 232
+  end
+  object DataSource1: TDataSource
+    DataSet = qryTypeZakl
+    Left = 360
+    Top = 240
+  end
+  object trTypeZakl: TFDTransaction
+    Connection = DataModule1.FDConnection
+    Left = 240
+    Top = 232
+  end
+end

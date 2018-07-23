@@ -1,0 +1,319 @@
+unit Main;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Menus, Vcl.ComCtrls,
+  Vcl.Tabs, FireDAC.Stan.Intf, FireDAC.Stan.Param, FireDAC.Phys.Intf, inifiles, LoginF, WinRstor,
+  FireDAC.Comp.Client;
+
+type
+  TClassFrom = class of TForm;
+
+  TMainForm = class(TForm)
+    MainMenu1: TMainMenu;
+    mnSettings: TMenuItem;
+    mnSetItems: TMenuItem;
+    mnReports: TMenuItem;
+    mnReportsView: TMenuItem;
+    mnFile: TMenuItem;
+    mnFileDataBase: TMenuItem;
+    N1: TMenuItem;
+    mnFileExit: TMenuItem;
+    mdiChildrenTabs: TTabSet;
+    mnSetSprav: TMenuItem;
+    mnSetSpravSchools: TMenuItem;
+    mnSetSpravCategEdu: TMenuItem;
+    mnSetTypeZakl: TMenuItem;
+    mnUsers: TMenuItem;
+
+
+    procedure mnReportsViewClick(Sender: TObject);
+
+    procedure mnFileDataBaseClick(Sender: TObject);
+    procedure CreateMDIChildForm(AFormType: TClassFrom);
+    procedure MDIFormClose(Sender: TObject; var Action: TCloseAction);
+    procedure mnSetSpravCategEduClick(Sender: TObject);
+    procedure mdiChildrenTabsChange(Sender: TObject; NewTab: Integer;
+      var AllowChange: Boolean);
+    procedure mnSetSpravSchoolsClick(Sender: TObject);
+    procedure mnSetTypeZaklClick(Sender: TObject);
+    procedure mnSetItemsClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure checkLOGIN (Sender: TObject; var Action: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure mnFileExitClick(Sender: TObject);
+    procedure mnUsersClick(Sender: TObject);
+
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    var ed :String;
+  end;
+
+var
+ xIniFile : TInifile;
+ xapppath : string;
+  MainForm: TMainForm;
+  xlogForm: tLoginForm;
+  enter,cl,firstEnterFlag: Boolean;
+
+
+implementation
+
+{$R *.dfm}
+
+uses  DModule, Add, ConfirmDelete, viewReport, formDB, EditReg, EditEduc, AddSpecForm, AddZaklad, AddTypeZakl, reportForm, Rekvizits, UsersF;
+
+procedure TMainForm.CreateMDIChildForm(AFormType: TClassFrom);
+var
+  xMDIForm: TForm;
+  i: Integer;
+  GlobalWinRestorer :TWinRestorer;
+begin
+
+  for i := 0 to mdiChildrenTabs.Tabs.Count-1 do
+  begin
+    if (mdiChildrenTabs.Tabs.Objects[i].ClassName = AFormType.ClassName) then
+    begin
+      mdiChildrenTabs.TabIndex := i;
+      Exit;
+    end;
+  end;
+
+
+  xMDIForm := AFormType.Create(Self);
+  with xMDIForm do
+  begin
+    BorderStyle := bsNone;
+    BorderIcons := [];
+    FormStyle := fsMDIChild;
+    WindowState := wsMaximized;
+    OnClose := MDIFormClose;
+    mdiChildrenTabs.TabIndex := mdiChildrenTabs.Tabs.AddObject(Caption, xMDIForm);
+  end;
+  mdiChildrenTabs.Refresh;
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+GlobalWinRestorer := TWinRestorer.create( Application, TRUE, [location, size, state]);
+GlobalWinRestorer.SaveWin(Self, [location, size, state]);
+
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+var
+   kolUs: integer;
+
+
+begin
+  GlobalWinRestorer := TWinRestorer.create( Application, TRUE, WHATSAVE_ALL);
+
+  enter := false;
+  cl := false;
+  xAppPath := ExtractFileDir(Application.ExeName) + PathDelim;
+  xIniFile := TIniFile.Create(xAppPath + 'config.ini');
+
+
+   while enter = false  do
+ begin
+  if cl = false then
+  begin
+  xLogForm := TLoginForm.Create(self);
+  xLogForm.FDQuery1.Close;
+  xLogForm.FDQuery1.SQL.Text := 'SELECT count(ID) FROM usersdb';
+  xLogForm.FDQuery1.Open();
+
+  kolUs := xLogForm.FDQuery1.FieldByName('Count').AsInteger;
+
+  if kolUs = 1 then
+  begin
+   xLogForm.Caption := 'Додати адміністратора';
+   firstEnterFlag:= true;
+   end else
+   begin
+
+
+   if xIniFile.ReadInteger('SaveLogin', 'loginFlag', 0) = 1 then
+   begin
+    xlogForm.Edit1.Text := xIniFile.ReadString('SaveLogin', 'login');
+    xlogForm.Edit2.Text := xIniFile.ReadString('SaveLogin', 'password');
+   end;
+
+   end;
+
+  xLogForm.OnClose := checkLOGIN;
+  xLogForm.ShowModal;
+
+  end else break;
+ end;
+  if enter then xlogForm.Free
+  else Application.Terminate;
+end;
+
+
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+GlobalWinRestorer.free;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+GlobalWinRestorer.RestoreWin(Self, [default]);
+end;
+
+procedure TMainForm.checkLOGIN (Sender: TObject; var Action: TCloseAction);
+var
+   kolUs: integer;
+
+begin
+
+
+
+if tLoginForm(Sender).ModalResult <> mrOK then
+  begin
+    cl := true;
+    Action := caFree;
+    Exit;
+  end;
+
+  try
+  xLogForm.FDQuery1.Close;
+  xLogForm.FDQuery1.SQL.Text := 'Select count(ID) from usersdb where login = :edLog and password= :edPass';
+  xLogForm.FDQuery1.ParamByName('edLog').AsString:= trim(xLogForm.Edit1.text);
+  xLogForm.FDQuery1.ParamByName('edPass').AsString:= trim(xlogForm.Edit2.text);
+  xLogForm.FDQuery1.Open();
+
+  if xIniFile.ReadInteger('SaveLogin', 'loginFlag', 0) = 1 then
+  begin
+  xLogForm.Edit1.Text := xinifile.ReadString('SaveLogin', 'login', 0);
+  xLogForm.Edit2.Text := xinifile.ReadString('SaveLogin', 'password', 0);
+  end;
+
+
+  kolUs := xLogForm.FDQuery1.FieldByName('count').AsInteger;
+
+  case firstEnterFlag of
+  false:
+  begin
+   if (xLogForm.Edit1.text = '') or (xLogForm.Edit2.text ='')  then
+   ShowMessage('Не всі поля заповнені')
+   else if kolUs =0
+   then ShowMessage('Логін або пароль введені невірно')
+   else  enter := true;
+  end;
+  true:
+  begin
+    if (xLogForm.Edit1.text = '') or (xLogForm.Edit2.text ='')
+    then ShowMessage('Не всі поля заповнені')
+    else
+    begin
+     xLogForm.FDQuery1.Close;
+     xLogForm.FDQuery1.SQL.Text := 'Insert into usersdb (login,password,admin_flag) values (:edlog, :edPass, 1)returning id';
+     xLogForm.FDQuery1.ParamByName('edLog').AsString:= trim(xLogForm.Edit1.text);
+     xLogForm.FDQuery1.ParamByName('edPass').AsString:= trim(xlogForm.Edit2.text);
+     xLogForm.FDQuery1.Open();
+     ShowMessage('Адміністратора успішно додано. Пройдіть авторизацію.');
+     xlogForm.FDTransaction1.Commit;
+     firstEnterFlag := false;
+    end;
+  end;
+
+  end;
+
+    except
+  on E: Exception do
+    begin
+      if xLogForm.FDQuery1.Active then
+        xLogForm.FDQuery1.close;
+      Application.ShowException(E);
+      Action := caNone;
+    end;
+
+  end;
+
+
+ xLogForm.FDQuery1.close;
+ Action := caFree;
+ end;
+
+
+
+procedure TMainForm.mdiChildrenTabsChange(Sender: TObject; NewTab: Integer;
+  var AllowChange: Boolean);
+var
+  xMDIForm: TForm;
+begin
+  xMDIForm := TForm(mdiChildrenTabs.Tabs.Objects[NewTab]);
+  xMDIForm.Show;
+  xMDIForm.WindowState := wsMaximized;
+end;
+
+procedure TMainForm.MDIFormClose(Sender: TObject; var Action: TCloseAction);
+var
+  xTabIndex: Integer;
+begin
+  xTabIndex := mdiChildrenTabs.Tabs.IndexOfObject(Sender);
+  if xTabIndex > 0 then
+    mdiChildrenTabs.TabIndex := xTabIndex - 1
+  else if xTabIndex < mdiChildrenTabs.Tabs.Count-1 then
+    mdiChildrenTabs.TabIndex := xTabIndex + 1;
+
+  mdiChildrenTabs.Tabs.Delete(xTabIndex);
+  Action := caFree;
+end;
+
+
+
+
+procedure TMainForm.mnFileDataBaseClick(Sender: TObject);
+begin
+CreateMDIChildForm(TDBForm);
+end;
+
+
+
+procedure TMainForm.mnFileExitClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure TMainForm.mnReportsViewClick(Sender: TObject);
+begin
+ CreateMDIChildForm(TreportF);
+end;
+
+procedure TMainForm.mnSetItemsClick(Sender: TObject);
+begin
+CreateMDIChildForm(TAddRekvizitForm);
+end;
+
+procedure TMainForm.mnSetSpravCategEduClick(Sender: TObject);
+begin
+CreateMDIChildForm(TAddSpecialForm);
+end;
+
+procedure TMainForm.mnSetSpravSchoolsClick(Sender: TObject);
+begin
+ CreateMDIChildForm(Taddschoolform);
+end;
+
+procedure TMainForm.mnSetTypeZaklClick(Sender: TObject);
+begin
+  CreateMDIChildForm(TaddTypeZaklad);
+end;
+
+procedure TMainForm.mnUsersClick(Sender: TObject);
+begin
+  CreateMDIChildForm(TusersForm);
+end;
+
+end.

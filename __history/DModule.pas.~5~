@@ -1,0 +1,162 @@
+unit DModule;
+
+interface
+
+uses
+   System.SysUtils, System.Classes, Vcl.Forms, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.IBBase,
+  FireDAC.Phys.FB, FireDAC.Comp.Client, Data.DB, System.IniFiles, Data.SqlTimSt,
+  FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, Vcl.ImgList,
+  Vcl.Controls, System.Generics.Collections, FireDAC.VCLUI.Login,
+  FireDAC.Phys.FBDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
+  FireDAC.Comp.DataSet;
+
+type
+  TDataModule1 = class(TDataModule)
+    FDConnection: TFDConnection;
+    FDPhysFBDriverLink: TFDPhysFBDriverLink;
+    TrRead: TFDTransaction;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+    //procedure Log_write(fname, text:string);
+    private
+    FDateChangeHandlers: System.Generics.Collections.TList<TNotifyEvent>;
+    FBeginDate: TDateTime;
+    FEndDate: TDateTime;
+    function GetBeginDateSt: TSQLTimeStamp;
+    function GetEndDateSt: TSQLTimeStamp;
+    procedure SetBeginDate(const Value: TDateTime);
+    procedure SetEndDate(const Value: TDateTime);
+  public
+    procedure AddDateChangeHandler(AEventHandler: TNotifyEvent);
+    procedure RemoveDateChangeHandler(AEventHandler: TNotifyEvent);
+    procedure DateChangeNotify;
+
+    property BeginDate: TDateTime read FBeginDate write SetBeginDate;
+    property EndDate: TDateTime read FEndDate write SetEndDate;
+    property BeginDateSt: TSQLTimeStamp read GetBeginDateSt;
+    property EndDateSt: TSQLTimeStamp read GetEndDateSt;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses Main, Dialogs;
+
+{$R *.dfm}
+
+procedure TDataModule1.DataModuleCreate(Sender: TObject);
+var
+xIniFile: TIniFile;
+xAppPath : string;
+xDate: tDateTime;
+login, password: string;
+
+begin
+FDateChangeHandlers := System.Generics.Collections.TList<TNotifyEvent>.Create;
+
+
+  xDate := StrToDate('01.10.2015');
+
+
+  FBeginDate := Int(xDate) - 75;
+  FEndDate := Int(xDate) + 15 + EncodeTime(23, 59, 59, 999);
+
+
+  xAppPath := ExtractFileDir(Application.ExeName) + PathDelim;
+  FDPhysFBDriverLink.VendorLib := xAppPath + 'fbclient' + PathDelim +
+    'fbclient.dll';
+
+    xIniFile := TIniFile.Create(xAppPath + 'config.ini');
+    login := xIniFile.ReadString('connection','UserName', 'Field don''t reading');
+    password := xIniFile.ReadString('connection','Password', 'Field don''t reading');
+
+  try
+
+    xIniFile.ReadSectionValues('connection', FDConnection.Params);
+
+
+
+  finally
+    xIniFile.Free;
+  end;
+
+
+  FDConnection.Open(login,password);
+  TrRead.StartTransaction;
+
+
+end;
+
+
+
+
+
+
+procedure TDataModule1.AddDateChangeHandler(AEventHandler: TNotifyEvent);
+begin
+  FDateChangeHandlers.Add(AEventHandler);
+end;
+
+
+procedure TDataModule1.DataModuleDestroy(Sender: TObject);
+begin
+  FDateChangeHandlers.Free;
+  FDateChangeHandlers := nil;
+
+  if trRead.Active then
+    trRead.Commit;
+  FDConnection.Close();
+end;
+
+procedure TDataModule1.DateChangeNotify;
+var
+  i: Integer;
+begin
+  for i := 0 to FDateChangeHandlers.Count - 1 do
+  begin
+    FDateChangeHandlers[i](Self);
+  end;
+end;
+
+function TDataModule1.GetBeginDateSt: TSQLTimeStamp;
+begin
+  Result := DateTimeToSQLTimeStamp(FBeginDate);
+end;
+
+function TDataModule1.GetEndDateSt: TSQLTimeStamp;
+begin
+  Result := DateTimeToSQLTimeStamp(FEndDate);
+end;
+
+procedure TDataModule1.RemoveDateChangeHandler(AEventHandler: TNotifyEvent);
+begin
+  FDateChangeHandlers.Remove(AEventHandler);
+end;
+
+procedure TDataModule1.SetBeginDate(const Value: TDateTime);
+begin
+  FBeginDate := Int(Value);
+end;
+
+procedure TDataModule1.SetEndDate(const Value: TDateTime);
+begin
+  FEndDate := Int(Value) + EncodeTime(23, 59, 59, 999);
+end;
+
+
+
+end.

@@ -1,0 +1,126 @@
+unit UsersF;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.Client, FireDAC.Comp.DataSet, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ComCtrls, Vcl.ToolWin,AddUserF;
+
+type
+  TusersForm = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    DBGrid1: TDBGrid;
+    FDQuery1: TFDQuery;
+    DataSource1: TDataSource;
+    FDTransaction1: TFDTransaction;
+    FDQuery2: TFDQuery;
+    procedure ToolButton1Click(Sender: TObject);
+    procedure AddUserClose(Sender: TObject;
+  var Action: TCloseAction);
+    procedure ToolButton3Click(Sender: TObject);
+    procedure confirmClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  usersForm: TusersForm;
+  xaddUsform: TAdduserForm;
+
+
+implementation
+
+{$R *.dfm}
+
+uses DModule, Main, formDB, WINRSTOR, confirmF;
+
+procedure TusersForm.ToolButton1Click(Sender: TObject);
+
+var
+  xAddForm: TAddUserForm;
+begin
+  xAddForm := TAddUserForm.Create(self);
+  try
+
+    xAddForm.OnClose := AddUserClose;
+    xAddForm.ShowModal;
+  finally
+    xAddForm.Free;
+  end;
+end;
+
+procedure TusersForm.ToolButton3Click(Sender: TObject);
+var
+xConfDel : tconfirmform;
+begin
+
+  xConfDel.onClose := confirmClose;
+  xConfDel.ShowModal;
+
+end;
+
+procedure Tusersform.confirmClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if TconfirmForm(Sender).ModalResult <> mrYes then
+  begin
+    Action := caFree;
+    Exit;
+  end;
+
+  FDTransaction1.StartTransaction;
+try
+   FDQuery2.Close;
+   FDQuery2.SQL.Text :='Delete from UsersDb where id = :id_old';
+   FDQuery2.ParamByName('ID_OLD').AsInteger := FDQuery1.FieldByName('ID').value;                  //Если нет передаем параметры процедуре добавления записи
+   FDQuery2.Open();
+   FDQuery2.Close();
+
+   FDTransaction1.Commit;
+   FDQuery1.Refresh;
+except
+  if FDTransaction1.Active then                                               //если что-то не так, то откатываем
+    Begin
+       FDTransaction1.Rollback;
+     End;
+end;
+end;
+
+
+procedure TusersForm.AddUserClose(Sender: TObject;
+  var Action: TCloseAction);
+  begin
+  if tadduserform(Sender).ModalResult <> mrOK then
+  begin
+    FDQuery1.Refresh;
+    Action := caFree;
+    Exit;
+  end;
+
+   FDTransaction1.StartTransaction;
+  try
+  FDQuery2.Close;
+  FDQuery2.SQL.Text := 'Insert into usersdb (login, password) values (:log, :pass) returning id';
+  FDQuery2.ParamByName('log').AsString :=  trim(xaddUsform.edLogin.Text);
+  FDQuery2.ParamByName('pass').AsString :=  trim(xaddUsform.edPassword.Text);
+  FDQuery2.Open();
+  FDTransaction1.Commit;
+  FDQuery1.Refresh;
+except
+  if FDTransaction1.Active then                                               //если что-то не так, то откатываем
+    Begin
+       FDTransaction1.Rollback;
+     End;
+end;
+ FDQuery2.Close();
+end;
+
+end.

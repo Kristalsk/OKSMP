@@ -1,0 +1,146 @@
+unit Add;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Phys, FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait,
+  FireDAC.Phys.IBBase, Vcl.ComCtrls, FireDAC.Phys.ODBC, FireDAC.Phys.ODBCDef,
+  Vcl.Buttons;
+
+type
+  TAddForm = class(TForm)
+    lbSurnameAdd: TLabel;
+    lbFirstNameAdd: TLabel;
+    lbLastNameAdd: TLabel;
+    lbBirthdayAdd: TLabel;
+    lbGenderAdd: TLabel;
+    DateTimePicker1: TDateTimePicker;
+    ComboBox1: TComboBox;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    edtSurname: TEdit;
+    edtFirstname: TEdit;
+    edtLastname: TEdit;
+    edtContSrnm: TEdit;
+    edtContFrstnm: TEdit;
+    edtContLstnm: TEdit;
+    edtContPhone: TEdit;
+    lbContSrnm: TLabel;
+    lbContFrstnm: TLabel;
+    lbContLstnm: TLabel;
+    lbContPhone: TLabel;
+    procedure Button2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure setBirthday (const Value: tDate);
+    procedure setDataChild (ASurname, AFirstname, ALastname : string; Agender : Integer );
+    procedure edtSurnameChange(Sender: TObject);
+    procedure edtFirstnameChange(Sender: TObject);
+    procedure edtLastnameChange(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure DateTimePicker1Change(Sender: TObject);
+    private
+    FChildId: Integer;
+    FSurname: String;
+    FFirstname: String;
+    FLastname: String;
+    FBirthday: TDate;
+    FgenderID: Integer;
+    public
+
+    property childID: Integer read FChildId write FChildId;
+    property birthday: TDate read FBirthday write SetBirthday;
+    property Surname: String read FSurname write FSurname;
+    property Firstname: String read FFirstname write FFirstname;
+    property Lastname: String read FLastname write FLastname;
+    property gender: Integer read FgenderID write FgenderID;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  AddForm: TAddForm;
+
+implementation
+
+{$R *.dfm}
+
+uses Main, DModule, formDB;
+
+
+procedure TAddForm.Button2Click(Sender: TObject);
+begin
+
+addform.Close;
+
+end;
+
+
+
+
+procedure TAddForm.ComboBox1Change(Sender: TObject);
+begin
+FgenderID := ComboBox1.ItemIndex;
+end;
+
+procedure TAddForm.DateTimePicker1Change(Sender: TObject);
+begin
+FBirthday := DateTimePicker1.Date
+end;
+
+procedure TAddForm.edtFirstnameChange(Sender: TObject);
+begin
+ FFirstname := edtFirstname.Text;
+end;
+
+procedure TAddForm.edtLastnameChange(Sender: TObject);
+begin
+FLastname := edtLastname.Text;
+end;
+
+procedure TAddForm.edtSurnameChange(Sender: TObject);
+begin
+FSurname := edtSurname.Text;
+end;
+
+procedure TAddForm.FormCreate(Sender: TObject);
+begin
+  FChildId := 0;
+  FSurname := '';
+  FFirstname := '';
+  FLastname := '';
+  FBirthday := Now;
+  DateTimePicker1.Format := 'dd.MM.yyyy';
+  FgenderID := 0;
+
+end;
+
+procedure TaddForm.setDataChild (ASurname, AFirstname, ALastname : string; Agender : Integer);
+begin
+
+  FSurname := ASurname;
+  FFirstname := AFirstname;
+  FLastname := ALastname;
+  FgenderID := Agender;
+  edtSurname.Text := FSurname;
+  edtFirstname.Text := FFirstname;
+  edtLastname.Text := FLastname;
+  ComboBox1.ItemIndex := FgenderID;
+
+end;
+
+procedure TAddForm.setBirthday (const Value: tDate);
+begin
+  FBirthday := Value;
+  DateTimePicker1.Date := FBirthday;
+end;
+
+end.

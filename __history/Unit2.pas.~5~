@@ -1,0 +1,119 @@
+unit Unit2;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
+  Vcl.DBGrids, Vcl.ExtCtrls, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.Client,
+  FireDAC.Comp.DataSet, Vcl.Menus, FireDAC.UI.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.FB, FireDAC.Phys.FBDef,
+  FireDAC.VCLUI.Wait, FireDAC.Phys.IBBase, FireDAC.Phys.ODBC,
+  FireDAC.Phys.ODBCDef;
+
+type
+  TMainForm = class(TForm)
+    FDUpdateDB: TFDUpdateSQL;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    DBGrid1: TDBGrid;
+    N6: TMenuItem;
+    FDConnection1: TFDConnection;
+    DataSource1: TDataSource;
+    FDQuery1: TFDQuery;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    procedure N3Click(Sender: TObject);
+    procedure N4Click(Sender: TObject);
+    procedure N5Click(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
+    procedure FDQuery1BeforeExecute(DataSet: TFDDataSet);
+    procedure FDQuery1AfterExecute(DataSet: TFDDataSet);
+    procedure N8Click(Sender: TObject);
+
+
+
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    var ed :String;
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses Unit3, Unit1, Unit4, Unit6;
+
+
+
+procedure TMainForm.DBGrid1TitleClick(Column: TColumn);
+var s : String;
+
+begin
+ s := Column.FieldName;
+ FDQuery1.IndexFieldNames := s;
+end;
+
+
+
+
+
+
+
+
+
+
+procedure TMainForm.FDQuery1AfterExecute(DataSet: TFDDataSet);
+begin
+fdconnection1.Connected := false;
+end;
+
+procedure TMainForm.FDQuery1BeforeExecute(DataSet: TFDDataSet);
+begin
+fdconnection1.Connected := true;
+end;
+
+procedure TMainForm.N3Click(Sender: TObject);
+begin
+
+MainForm.FDQuery1.Append;
+AddForm.Show;
+
+end;
+
+procedure TMainForm.N4Click(Sender: TObject);
+begin
+FDQuery1.edit;
+EditForm.show;
+
+end;
+
+procedure TMainForm.N5Click(Sender: TObject);
+begin
+    DelConfForm.Show;
+end;
+
+procedure TMainForm.N8Click(Sender: TObject);
+begin
+ form6.show;
+ form6.frxreport1.showreport();
+end;
+
+end.

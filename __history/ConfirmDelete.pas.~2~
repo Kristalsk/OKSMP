@@ -1,0 +1,44 @@
+unit ConfirmDelete;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TDelConfForm = class(TForm)
+    Label1: TLabel;
+    ButtonOK: TButton;
+    ButtonCancel: TButton;
+    procedure ButtonOKClick(Sender: TObject);
+    procedure ButtonCancelClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DelConfForm: TDelConfForm;
+
+implementation
+
+{$R *.dfm}
+
+uses Unit2;
+
+procedure TDelConfForm.ButtonCancelClick(Sender: TObject);
+begin
+DelConfForm.Close;
+MainForm.FDQuery1.Refresh;
+end;
+
+procedure TDelConfForm.ButtonOKClick(Sender: TObject);
+begin
+MainForm.FDQuery1.Delete;
+MainForm.FDQuery1.Refresh;
+DelConfForm.Close;
+end;
+
+end.
